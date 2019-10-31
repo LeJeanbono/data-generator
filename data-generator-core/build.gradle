@@ -30,7 +30,7 @@ dependencies {
     testCompile('org.junit.jupiter:junit-jupiter-params:5.5.2')
     testRuntime('org.junit.jupiter:junit-jupiter-engine:5.2.0')
     testCompile "org.mockito:mockito-core:2.25.1"
-    testCompile('org.mockito:mockito-junit-jupiter:2.25.1')
+    testCompile('org.mockito:mockito-junit-jupiter:2.28.2')
     compile "org.projectlombok:lombok:${lombokVersion}"
 }
 
