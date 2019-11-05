@@ -24,7 +24,7 @@ sourceCompatibility = 11.0
 
 dependencies {
     compile 'org.springframework:spring-context:5.1.5.RELEASE'
-    compile 'org.jeasy:easy-random-core:4.0.0'
+    compile 'org.jeasy:easy-random-core:4.1.0'
     testImplementation "org.assertj:assertj-core:3.14.0"
     testImplementation('org.junit.jupiter:junit-jupiter-api:5.5.2')
     testRuntime('org.junit.jupiter:junit-jupiter-engine:5.5.2')
