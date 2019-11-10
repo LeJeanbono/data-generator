@@ -24,6 +24,9 @@ jobs:
     steps:
       - checkout
 
+      - store_test_results:
+          path: /*/test-results/*
+
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -40,6 +43,3 @@ jobs:
 
       # run tests!
       - run: gradle test
-
-      - store_test_results:
-          path: /*/test-results/*
