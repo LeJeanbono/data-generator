@@ -148,10 +148,4 @@ class GeneratorTest {
 
         assertThat(result.getListObject()).containsExactly(tc22);
     }
-
-    @Test
-    void getAllClassAnnotatedTest() throws ClassNotFoundException {
-        List<Class> classes = generator.getAllClassAnnotated();
-        assertThat(classes).containsOnly(MyClass.class, MyClass2.class);
-    }
 }
