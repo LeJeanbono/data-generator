@@ -1,4 +1,4 @@
-package exampleClasses;
+package mergeClasses;
 
 import java.util.Objects;
 

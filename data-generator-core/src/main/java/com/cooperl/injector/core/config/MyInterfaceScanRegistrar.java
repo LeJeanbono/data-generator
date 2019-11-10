@@ -1,6 +1,6 @@
 package com.cooperl.injector.core.config;
 
-import com.cooperl.injector.core.annotation.MyInterfaceScan;
+import com.cooperl.injector.core.annotation.EnableDataGenerator;
 import com.cooperl.injector.core.annotation.TestData;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -28,8 +28,8 @@ public class MyInterfaceScanRegistrar implements ImportBeanDefinitionRegistrar, 
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
-        // Get the MyInterfaceScan annotation attributes
-        Map<String, Object> annotationAttributes = metadata.getAnnotationAttributes(MyInterfaceScan.class.getCanonicalName());
+        // Get the EnableDataGenerator annotation attributes
+        Map<String, Object> annotationAttributes = metadata.getAnnotationAttributes(EnableDataGenerator.class.getCanonicalName());
 
         if (annotationAttributes != null) {
             String[] basePackages = (String[]) annotationAttributes.get("value");

@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Import({MyInterfaceScanRegistrar.class})
-public @interface MyInterfaceScan {
+public @interface EnableDataGenerator {
 
     String[] value() default {};
 }

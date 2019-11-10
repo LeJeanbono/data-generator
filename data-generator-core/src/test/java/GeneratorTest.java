@@ -1,6 +1,8 @@
+import annotatedClasses.MyClass;
+import annotatedClasses.MyClass2;
 import com.cooperl.injector.core.generator.Generator;
-import exampleClasses.TestClass;
-import exampleClasses.TestClass2;
+import mergeClasses.TestClass;
+import mergeClasses.TestClass2;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -147,4 +149,9 @@ class GeneratorTest {
         assertThat(result.getListObject()).containsExactly(tc22);
     }
 
+    @Test
+    void getAllClassAnnotatedTest() throws ClassNotFoundException {
+        List<Class> classes = generator.getAllClassAnnotated();
+        assertThat(classes).containsOnly(MyClass.class, MyClass2.class);
+    }
 }
