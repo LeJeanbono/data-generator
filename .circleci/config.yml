@@ -39,8 +39,9 @@ jobs:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
-      # run tests!
+      - run: gradle bootRun
+
       - run: gradle test
 
       - store_test_results:
-          path: ~/repo/data-generator-core/build/test-results
+          path: ~/repo/*/build/test-results
