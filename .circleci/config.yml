@@ -39,7 +39,7 @@ jobs:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
-      - run: gradle bootRun
+      - run: gradle :data-generator-mongodb-e2e:bootRun
 
       - run: gradle test
 
