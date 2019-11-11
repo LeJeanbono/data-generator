@@ -44,8 +44,6 @@ jobs:
           command: gradle :data-generator-mongodb-e2e:bootRun
           background: true
 
-      - sleep 5
-
       - run: gradle test
 
       - store_test_results:
