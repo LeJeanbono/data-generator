@@ -1,8 +1,6 @@
-import annotatedClasses.MyClass;
-import annotatedClasses.MyClass2;
 import com.cooperl.injector.core.generator.Generator;
-import mergeClasses.TestClass;
-import mergeClasses.TestClass2;
+import classes.TestClass;
+import classes.TestClass2;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
