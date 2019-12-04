@@ -24,7 +24,7 @@ repositories {
 dependencies {
     compile project(':data-generator-core')
     compile 'org.springframework:spring-web:5.2.2.RELEASE'
-    compile 'org.springframework.data:spring-data-mongodb:2.2.2.RELEASE'
+    compile 'org.springframework.data:spring-data-mongodb:2.2.3.RELEASE'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.10.1'
     testCompile 'junit:junit:4.12'
 }
