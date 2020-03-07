@@ -26,14 +26,14 @@ version '0.3.0'
 sourceCompatibility = 11.0
 
 dependencies {
-    compile 'org.springframework:spring-context:5.2.3.RELEASE'
+    compile 'org.springframework:spring-context:5.2.4.RELEASE'
     compile 'org.jeasy:easy-random-core:4.1.0'
     testImplementation "org.assertj:assertj-core:3.15.0"
     testImplementation('org.junit.jupiter:junit-jupiter-api:5.6.0')
     testRuntime('org.junit.jupiter:junit-jupiter-engine:5.6.0')
     testCompile('org.junit.jupiter:junit-jupiter-params:5.6.0')
-    testCompile('org.mockito:mockito-junit-jupiter:3.3.0')
     testCompile "org.mockito:mockito-core:3.3.1"
+    testCompile('org.mockito:mockito-junit-jupiter:3.3.1')
     compile "org.projectlombok:lombok:${lombokVersion}"
 }
 
