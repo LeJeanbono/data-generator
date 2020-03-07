@@ -39,7 +39,7 @@ public class Generator {
         easyRandom = new EasyRandom(parameters);
     }
 
-    public Object generateObject(Class c) {
+    public Object generateObject(Class<?> c) {
         return easyRandom.nextObject(c);
     }
 

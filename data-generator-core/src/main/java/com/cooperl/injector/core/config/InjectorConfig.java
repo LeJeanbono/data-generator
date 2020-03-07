@@ -2,7 +2,6 @@ package com.cooperl.injector.core.config;
 
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
