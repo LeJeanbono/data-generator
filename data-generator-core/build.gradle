@@ -12,6 +12,9 @@ plugins {
 repositories {
     mavenCentral()
     mavenLocal()
+    maven {
+        url  "https://dl.bintray.com/mockito/maven"
+    }
 }
 
 apply plugin: 'java-library'
