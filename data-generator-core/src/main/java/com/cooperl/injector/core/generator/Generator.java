@@ -1,6 +1,7 @@
 package com.cooperl.injector.core.generator;
 
 import com.cooperl.injector.core.config.InjectorConfig;
+import com.cooperl.injector.core.exception.GeneratorException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -23,6 +24,7 @@ import java.util.*;
 import static com.cooperl.injector.core.generator.SpecialValueEnum.EMPTY;
 import static com.cooperl.injector.core.generator.SpecialValueEnum.NULL;
 import static java.lang.reflect.Modifier.isStatic;
+import static java.text.MessageFormat.format;
 
 @Service
 public class Generator {
@@ -48,7 +50,7 @@ public class Generator {
         beanGenerator = new BeanGenerator();
     }
 
-    public Object generateObject(Map<String, Object> body, String ressource) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, IntrospectionException {
+    public Object generateObject(Map<String, Object> body, String ressource) {
         HashMap<String, Object> shallowCopy = new HashMap<>();
         shallowCopy.putAll(body);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -71,9 +73,9 @@ public class Generator {
         return easyRandom.nextObject(c);
     }
 
-    public Object merge(Object generatedObject, Object update) throws InvocationTargetException, IllegalAccessException {
+    public Object merge(Object generatedObject, Object update) {
         if (!generatedObject.getClass().isAssignableFrom(update.getClass())) {
-            throw new InternalError("Bad class matching");
+            throw new GeneratorException(format("Bad class matching, {0} is not assignable to {1}", generatedObject.getClass(), update.getClass()));
         }
         if (ClassUtils.isPrimitiveOrWrapper(generatedObject.getClass()) || generatedObject.getClass() == String.class) {
             if (update != null) {
@@ -86,28 +88,24 @@ public class Generator {
         for (Field field : fields) {
             if (!isStatic(field.getModifiers())) {
                 String fieldName = field.getName();
-                try {
-                    Class setterParamClass = getSetterParamClass(generatedObject, fieldName);
-                    // Si un tableau
-                    if (setterParamClass == List.class) {
-                        List<Object> res = new ArrayList<>();
-                        List listeUpdate = (List) callGetter(update, fieldName);
-                        // Il faut merge dans les items du tableau
-                        if (!CollectionUtils.isEmpty(listeUpdate)) {
-                            for (Object up : listeUpdate) {
-                                Object gene = this.generateRandomObject(getSetterGenericParamClass(generatedObject, fieldName));
-                                res.add(merge(gene, up));
-                            }
-                            callSetter(generatedObject, fieldName, res);
+                Class<?> setterParamClass = getSetterParamClass(generatedObject, fieldName);
+                // Si un tableau
+                if (setterParamClass == List.class) {
+                    List<Object> res = new ArrayList<>();
+                    List<?> listeUpdate = (List<?>) callGetter(update, fieldName);
+                    // Il faut merge dans les items du tableau
+                    if (!CollectionUtils.isEmpty(listeUpdate)) {
+                        for (Object up : listeUpdate) {
+                            Object gene = this.generateRandomObject(getSetterGenericParamClass(generatedObject, fieldName));
+                            res.add(merge(gene, up));
                         }
-                    } else {
-                        Object value = callGetter(update, fieldName);
-                        if (value != null) {
-                            callSetter(generatedObject, fieldName, value);
-                        }
+                        callSetter(generatedObject, fieldName, res);
                     }
-                } catch (IntrospectionException e) {
-                    e.printStackTrace();
+                } else {
+                    Object value = callGetter(update, fieldName);
+                    if (value != null) {
+                        callSetter(generatedObject, fieldName, value);
+                    }
                 }
             }
         }
@@ -115,24 +113,31 @@ public class Generator {
         return generatedObject;
     }
 
-    public List<Class> getAllClassAnnotated() throws ClassNotFoundException {
-        List<Class> result = new ArrayList<>();
+    public List<Class<?>> getAllClassAnnotated() {
+        List<Class<?>> result = new ArrayList<>();
         for (String bean : injectorConfig.getBeansClassName()) {
-            result.add(BeanGenerator.class.getClassLoader().loadClass(bean));
+            result.add(loadAndGetClass(bean));
         }
         return result;
     }
 
-    public Class getClassOfRessource(String ressource) throws ClassNotFoundException {
+    public Class<?> getClassOfRessource(String ressource) {
         for (String bean : injectorConfig.getBeansClassName()) {
             String capitalize = ressource.substring(0, 1).toUpperCase() + ressource.substring(1);
             String clazz = capitalize.substring(0, capitalize.length() - 1);
             if (bean.contains(clazz)) {
-                return beanGenerator.getClassLoader().loadClass(bean);
-                //return BeanGenerator.class.getClassLoader().loadClass(bean);
+                return loadAndGetClass(bean);
             }
         }
         return null;
+    }
+
+    private Class<?> loadAndGetClass(String bean) {
+        try {
+            return beanGenerator.getClassLoader().loadClass(bean);
+        } catch (ClassNotFoundException e) {
+            throw new GeneratorException(format("Cannot load class {0}", bean), e);
+        }
     }
 
     private List<Field> getAllFields(List<Field> fields, Class<?> type) {
@@ -145,25 +150,53 @@ public class Generator {
         return fields;
     }
 
-    private Class getSetterParamClass(Object obj, String fieldName) throws IntrospectionException {
-        PropertyDescriptor pd = new PropertyDescriptor(fieldName, obj.getClass());
+    private Class<?> getSetterParamClass(Object obj, String fieldName) {
+        PropertyDescriptor pd;
+        try {
+            pd = new PropertyDescriptor(fieldName, obj.getClass());
+        } catch (IntrospectionException e) {
+            throw new GeneratorException(format("Cannot get property {0},  for class {1}", fieldName, obj.getClass()), e);
+        }
         return pd.getWriteMethod().getParameterTypes()[0];
     }
 
-    private Class getSetterGenericParamClass(Object obj, String fieldName) throws IntrospectionException {
-        PropertyDescriptor pd = new PropertyDescriptor(fieldName, obj.getClass());
+    private Class<?> getSetterGenericParamClass(Object obj, String fieldName) {
+        PropertyDescriptor pd;
+        try {
+            pd = new PropertyDescriptor(fieldName, obj.getClass());
+        } catch (IntrospectionException e) {
+            throw new GeneratorException(format("Cannot get property {0},  for class {1}", fieldName, obj.getClass()), e);
+        }
         ParameterizedType stringListType = (ParameterizedType) pd.getWriteMethod().getGenericParameterTypes()[0];
         return (Class<?>) stringListType.getActualTypeArguments()[0];
     }
 
-    private void callSetter(Object obj, String fieldName, Object value) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
-        PropertyDescriptor pd = new PropertyDescriptor(fieldName, obj.getClass());
-        pd.getWriteMethod().invoke(obj, value);
+    private void callSetter(Object obj, String fieldName, Object value) {
+        PropertyDescriptor pd;
+        try {
+            pd = new PropertyDescriptor(fieldName, obj.getClass());
+        } catch (IntrospectionException e) {
+            throw new GeneratorException(format("Cannot get property {0},  for class {1}", fieldName, obj.getClass()), e);
+        }
+        try {
+            pd.getWriteMethod().invoke(obj, value);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new GeneratorException(format("Cannot call setter {0},  for class {1}", pd.getWriteMethod().getName(), obj.getClass()), e);
+        }
     }
 
-    private Object callGetter(Object obj, String fieldName) throws IllegalAccessException, IntrospectionException, InvocationTargetException {
-        PropertyDescriptor pd = new PropertyDescriptor(fieldName, obj.getClass());
-        return pd.getReadMethod().invoke(obj);
+    private Object callGetter(Object obj, String fieldName) {
+        PropertyDescriptor pd;
+        try {
+            pd = new PropertyDescriptor(fieldName, obj.getClass());
+        } catch (IntrospectionException e) {
+            throw new GeneratorException(format("Cannot get property {0},  for class {1}", fieldName, obj.getClass()), e);
+        }
+        try {
+            return pd.getReadMethod().invoke(obj);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new GeneratorException(format("Cannot call getter {0},  for class {1}", pd.getReadMethod().getName(), obj.getClass()), e);
+        }
     }
 
     private void reinitSpecialValue(Map<String, Object> body) {
@@ -176,7 +209,7 @@ public class Generator {
             } else if (val instanceof Map) {
                 reinitSpecialValue((Map<String, Object>) val);
             } else if (val instanceof List) {
-                for (Object o : ((List) val)) {
+                for (Object o : ((List<?>) val)) {
                     if (o instanceof Map) {
                         reinitSpecialValue((Map<String, Object>) o);
                     }
@@ -185,7 +218,7 @@ public class Generator {
         }
     }
 
-    private void applySpecialValue(Map<String, Object> shallowCopy, Object myPojo) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
+    private void applySpecialValue(Map<String, Object> shallowCopy, Object myPojo) {
         for (String val : shallowCopy.keySet()) {
             Object shallowVal = shallowCopy.get(val);
             if (NULL.equals(SpecialValueEnum.get(shallowVal))) {
@@ -195,8 +228,8 @@ public class Generator {
             } else if (shallowVal instanceof Map) {
                 applySpecialValue((Map<String, Object>) shallowVal, callGetter(myPojo, val));
             } else if (shallowVal instanceof List) {
-                List list = (List) callGetter(myPojo, val);
-                List listOfMap = ((List) shallowVal);
+                List<?> list = (List<?>) callGetter(myPojo, val);
+                List<?> listOfMap = ((List<?>) shallowVal);
                 for (int i = 0; i < listOfMap.size(); i++) {
                     if (listOfMap.get(i) instanceof Map) {
                         applySpecialValue((Map<String, Object>) listOfMap.get(i), list.get(i));
@@ -205,6 +238,4 @@ public class Generator {
             }
         }
     }
-
-
 }
