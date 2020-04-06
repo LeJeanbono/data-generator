@@ -1,16 +1,16 @@
 package com.cooperl.injector.mongodb;
 
 import com.cooperl.injector.core.generator.Generator;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("test/datas")
@@ -41,31 +41,17 @@ public class MongoDBController {
     public ResponseEntity addData(
             @PathVariable String ressource,
             @RequestParam(value = "number", defaultValue = "1") Integer number,
-            @RequestBody Object body
-    ) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException {
+            @RequestBody Map<String, Object> body
+    ) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, IntrospectionException {
         if (number > 1) {
             List<Object> response = new ArrayList<>();
             for (int i = 0; i < number; i++) {
-                response.add(generateAndSave(ressource, body));
+                response.add(this.generator.generateObject(body, ressource));
             }
             return ResponseEntity.created(null).body(response);
         } else {
-            return ResponseEntity.created(null).body(generateAndSave(ressource, body));
+            return ResponseEntity.created(null).body(this.generator.generateObject(body, ressource));
         }
-    }
-
-    private Object generateAndSave(
-            String ressource,
-            Object body
-    ) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        Class<?> c = this.generator.getClassOfRessource(ressource);
-        Object pojo = objectMapper.convertValue(body, c);
-        Object myPojo = this.generator.generateObject(c);
-        myPojo = this.generator.merge(myPojo, pojo);
-        mongoTemplate.save(myPojo);
-        return myPojo;
     }
 
     @GetMapping(path = "/{ressource}")
