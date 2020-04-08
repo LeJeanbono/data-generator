@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DataGeneratorConfig {
 
-    @Value("data-generator.plural-ressources")
+    @Value("${data-generator.plural-ressources:false}")
     private Boolean pluralRessources;
 
     public Boolean getPluralRessources() {
