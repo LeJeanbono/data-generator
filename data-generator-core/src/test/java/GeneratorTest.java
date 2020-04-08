@@ -1,5 +1,6 @@
 import classes.TestClass;
 import classes.TestClass2;
+import com.cooperl.injector.core.config.DataGeneratorConfig;
 import com.cooperl.injector.core.config.InjectorConfig;
 import com.cooperl.injector.core.exception.GeneratorException;
 import com.cooperl.injector.core.generator.Generator;
@@ -12,8 +13,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.cglib.beans.BeanGenerator;
 
-import java.beans.IntrospectionException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,13 +37,16 @@ class GeneratorTest {
     @Mock
     private ClassLoader classLoader;
 
+    @Mock
+    private DataGeneratorConfig dataGeneratorConfig;
+
     @BeforeEach
     void init() {
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    void mergeSimpleClass() throws InvocationTargetException, IllegalAccessException {
+    void mergeSimpleClass() {
         TestClass c = new TestClass();
         c.setDoublee(3.3);
         c.setInteger(3);
@@ -71,7 +73,7 @@ class GeneratorTest {
     }
 
     @Test
-    void mergeEcraseSimpleClass() throws InvocationTargetException, IllegalAccessException {
+    void mergeEcraseSimpleClass() {
         TestClass c = new TestClass();
         c.setDoublee(3.3);
         c.setInteger(3);
@@ -102,7 +104,7 @@ class GeneratorTest {
 
 
     @Test
-    void mergeEmptyListClass() throws InvocationTargetException, IllegalAccessException {
+    void mergeEmptyListClass() {
         TestClass c = new TestClass();
         List<String> listString = new ArrayList<>();
         listString.add("toto");
@@ -116,7 +118,7 @@ class GeneratorTest {
     }
 
     @Test
-    void mergeListString() throws InvocationTargetException, IllegalAccessException {
+    void mergeListString() {
         TestClass c = new TestClass();
         List<String> listString = new ArrayList<>();
         listString.add("toto");
@@ -133,7 +135,7 @@ class GeneratorTest {
     }
 
     @Test
-    void mergeListObject() throws InvocationTargetException, IllegalAccessException {
+    void mergeListObject() {
         TestClass c = new TestClass();
         List<TestClass2> listObject = new ArrayList<>();
         TestClass2 tc2 = new TestClass2();
@@ -150,7 +152,7 @@ class GeneratorTest {
     }
 
     @Test
-    void mergeListObjectEcrase() throws InvocationTargetException, IllegalAccessException {
+    void mergeListObjectEcrase() {
         TestClass c = new TestClass();
         List<TestClass2> listObject = new ArrayList<>();
         TestClass2 tc2 = new TestClass2();
@@ -173,14 +175,23 @@ class GeneratorTest {
     }
 
     @Test
+    void mergeBadIncompatibleClass() {
+        String string = "A String";
+        Integer number = 6;
+        assertThatThrownBy(() -> generator.merge(string, number))
+                .isInstanceOf(GeneratorException.class)
+                .hasMessageContaining("Bad class matching, class java.lang.String is not assignable to class java.lang.Integer");
+    }
+
+    @Test
     void getAllClassAnnotated() throws ClassNotFoundException {
         List<String> classes = new ArrayList<>();
-        classes.add("TestClass2");
-        classes.add("TestClass");
+        classes.add("classes.TestClass2");
+        classes.add("classes.TestClass");
         when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
         when(beanGeneratorMock.getClassLoader()).thenReturn(classLoader);
-        doReturn(TestClass.class).when(classLoader).loadClass("TestClass");
-        doReturn(TestClass2.class).when(classLoader).loadClass("TestClass2");
+        doReturn(TestClass.class).when(classLoader).loadClass("classes.TestClass");
+        doReturn(TestClass2.class).when(classLoader).loadClass("classes.TestClass2");
 
         List<Class<?>> classs = generator.getAllClassAnnotated();
 
@@ -190,24 +201,25 @@ class GeneratorTest {
     @Test
     void getAllClassAnnotatedClassLoadException() throws ClassNotFoundException {
         List<String> classes = new ArrayList<>();
-        classes.add("TestClass");
+        classes.add("classes.TestClass");
         when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
         when(beanGeneratorMock.getClassLoader()).thenReturn(classLoader);
-        doThrow(ClassNotFoundException.class).when(classLoader).loadClass("TestClass");
+        doThrow(ClassNotFoundException.class).when(classLoader).loadClass("classes.TestClass");
 
         assertThatThrownBy(() -> generator.getAllClassAnnotated())
                 .isInstanceOf(GeneratorException.class)
-                .hasMessageContaining("Cannot load class TestClass");
+                .hasMessageContaining("Cannot load class classes.TestClass");
     }
 
     @Test
     void getClassOfRessource() throws ClassNotFoundException {
         List<String> classes = new ArrayList<>();
-        classes.add("Other");
-        classes.add("TestClass");
+        classes.add("classes.Other");
+        classes.add("classes.TestClass");
         when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
         when(beanGeneratorMock.getClassLoader()).thenReturn(classLoader);
-        doReturn(TestClass.class).when(classLoader).loadClass("TestClass");
+        when(dataGeneratorConfig.getPluralRessources()).thenReturn(false);
+        doReturn(TestClass.class).when(classLoader).loadClass("classes.TestClass");
 
         Class<?> clazz = generator.getClassOfRessource("TestClass");
 
@@ -217,7 +229,7 @@ class GeneratorTest {
     @Test
     void getClassOfRessourceNotFound() {
         List<String> classes = new ArrayList<>();
-        classes.add("Other");
+        classes.add("classes.Other");
         when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
 
         Class<?> clazz = generator.getClassOfRessource("TestClass");
@@ -226,14 +238,15 @@ class GeneratorTest {
     }
 
     @Test
-    void generateObject() throws ClassNotFoundException, IntrospectionException, IllegalAccessException, InvocationTargetException {
-        Map<String, Object> body = new HashMap<>();
+    void generateObject() throws ClassNotFoundException {
+        HashMap<String, Object> body = new HashMap<>();
         List<String> classes = new ArrayList<>();
-        classes.add("Other");
-        classes.add("TestClass2");
+        classes.add("classes.Other");
+        classes.add("classes.TestClass2");
         when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
         when(beanGeneratorMock.getClassLoader()).thenReturn(classLoader);
-        doReturn(TestClass2.class).when(classLoader).loadClass("TestClass2");
+        when(dataGeneratorConfig.getPluralRessources()).thenReturn(false);
+        doReturn(TestClass2.class).when(classLoader).loadClass("classes.TestClass2");
 
         Object o = generator.generateObject(body, "TestClass2");
 
@@ -244,14 +257,15 @@ class GeneratorTest {
     }
 
     @Test
-    void generateObjectNullAttribute() throws ClassNotFoundException, IllegalAccessException, IntrospectionException, InvocationTargetException {
-        Map<String, Object> body = new HashMap<>();
+    void generateObjectNullAttribute() throws ClassNotFoundException {
+        HashMap<String, Object> body = new HashMap<>();
         body.put("toto", "##NULL##");
         List<String> classes = new ArrayList<>();
-        classes.add("TestClass2");
+        classes.add("classes.TestClass2");
         when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
         when(beanGeneratorMock.getClassLoader()).thenReturn(classLoader);
-        doReturn(TestClass2.class).when(classLoader).loadClass("TestClass2");
+        when(dataGeneratorConfig.getPluralRessources()).thenReturn(false);
+        doReturn(TestClass2.class).when(classLoader).loadClass("classes.TestClass2");
 
         Object o = generator.generateObject(body, "TestClass2");
 
@@ -262,14 +276,15 @@ class GeneratorTest {
     }
 
     @Test
-    void generateObjectEmptyAttribute() throws ClassNotFoundException, IllegalAccessException, IntrospectionException, InvocationTargetException {
-        Map<String, Object> body = new HashMap<>();
+    void generateObjectEmptyAttribute() throws ClassNotFoundException {
+        HashMap<String, Object> body = new HashMap<>();
         body.put("listString", "##EMPTY##");
         List<String> classes = new ArrayList<>();
-        classes.add("TestClass");
+        classes.add("classes.TestClass");
         when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
         when(beanGeneratorMock.getClassLoader()).thenReturn(classLoader);
-        doReturn(TestClass.class).when(classLoader).loadClass("TestClass");
+        when(dataGeneratorConfig.getPluralRessources()).thenReturn(false);
+        doReturn(TestClass.class).when(classLoader).loadClass("classes.TestClass");
 
         Object o = generator.generateObject(body, "TestClass");
 
@@ -281,12 +296,25 @@ class GeneratorTest {
     }
 
     @Test
-    void mergeBadIncompatibleClass() {
-        String string = "A String";
-        Integer number = 6;
-        assertThatThrownBy(() -> generator.merge(string, number))
-                .isInstanceOf(GeneratorException.class)
-                .hasMessageContaining("Bad class matching, class java.lang.String is not assignable to class java.lang.Integer");
+    void d() throws ClassNotFoundException {
+        HashMap<String, Object> body = new HashMap<>();
+        Map<String, Object> object = new HashMap<>();
+        object.put("toto", "##NULL##");
+        List<Object> listObject = new ArrayList<>();
+        listObject.add(object);
+        body.put("listObject", listObject);
+        List<String> classes = new ArrayList<>();
+        classes.add("classes.TestClass");
+        when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
+        when(beanGeneratorMock.getClassLoader()).thenReturn(classLoader);
+        when(dataGeneratorConfig.getPluralRessources()).thenReturn(false);
+        doReturn(TestClass.class).when(classLoader).loadClass("classes.TestClass");
+
+        Object o = generator.generateObject(body, "TestClass");
+
+        assertThat(o.getClass()).isEqualTo(TestClass.class);
+        TestClass testClass = (TestClass) o;
+        assertThat(testClass.getListObject().get(0).getToto()).isNull();
     }
 
 }

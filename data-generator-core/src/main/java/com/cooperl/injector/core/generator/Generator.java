@@ -1,10 +1,12 @@
 package com.cooperl.injector.core.generator;
 
+import com.cooperl.injector.core.config.DataGeneratorConfig;
 import com.cooperl.injector.core.config.InjectorConfig;
 import com.cooperl.injector.core.exception.GeneratorException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.google.gson.Gson;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
 import org.jeasy.random.randomizers.range.DoubleRangeRandomizer;
@@ -35,6 +37,10 @@ public class Generator {
 
     private BeanGenerator beanGenerator;
 
+    private DataGeneratorConfig dataGeneratorConfig;
+
+    private Gson gson;
+
     public Generator(InjectorConfig injectorConfig) {
         this.injectorConfig = injectorConfig;
         EasyRandomParameters parameters = new EasyRandomParameters()
@@ -48,11 +54,12 @@ public class Generator {
                 .randomizationDepth(5);
         easyRandom = new EasyRandom(parameters);
         beanGenerator = new BeanGenerator();
+        dataGeneratorConfig = new DataGeneratorConfig();
+        gson = new Gson();
     }
 
     public Object generateObject(Map<String, Object> body, String ressource) {
-        HashMap<String, Object> shallowCopy = new HashMap<>();
-        shallowCopy.putAll(body);
+        Map<String, Object> shallowCopy = copy(body);
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
@@ -68,11 +75,6 @@ public class Generator {
         return myPojo;
     }
 
-    private Object generateRandomObject(Class<?> c) {
-        easyRandom.setSeed(new Random().nextLong());
-        return easyRandom.nextObject(c);
-    }
-
     public Object merge(Object generatedObject, Object update) {
         if (!generatedObject.getClass().isAssignableFrom(update.getClass())) {
             throw new GeneratorException(format("Bad class matching, {0} is not assignable to {1}", generatedObject.getClass(), update.getClass()));
@@ -82,7 +84,6 @@ public class Generator {
                 return update;
             }
         }
-        // Method[] methods = generatedObject.getClass().getMethods();
         List<Field> fields = getAllFields(new LinkedList<>(), generatedObject.getClass());
 
         for (Field field : fields) {
@@ -123,13 +124,28 @@ public class Generator {
 
     public Class<?> getClassOfRessource(String ressource) {
         for (String bean : injectorConfig.getBeansClassName()) {
+            String[] split = bean.split("\\.");
+            String className = split[split.length - 1];
             String capitalize = ressource.substring(0, 1).toUpperCase() + ressource.substring(1);
-            String clazz = capitalize.substring(0, capitalize.length() - 1);
-            if (bean.contains(clazz)) {
+            String clazz = capitalize;
+            if (dataGeneratorConfig.getPluralRessources()) {
+                clazz = capitalize.substring(0, capitalize.length() - 1);
+            }
+            if (className.equals(clazz)) {
                 return loadAndGetClass(bean);
             }
         }
         return null;
+    }
+
+    private Map<String, Object> copy(Map<String, Object> original) {
+        String jsonString = gson.toJson(original);
+        return gson.fromJson(jsonString, Map.class);
+    }
+
+    private Object generateRandomObject(Class<?> c) {
+        easyRandom.setSeed(new Random().nextLong());
+        return easyRandom.nextObject(c);
     }
 
     private Class<?> loadAndGetClass(String bean) {
