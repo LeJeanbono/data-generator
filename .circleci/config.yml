@@ -44,6 +44,10 @@ jobs:
           command: gradle :data-generator-mongodb-e2e:bootRun
           background: true
 
+      - run:
+          name: Wait for Spring Boot
+          command: dockerize -wait tcp://localhost:8080 -timeout 1m
+
       - run: gradle test
 
       - store_test_results:
