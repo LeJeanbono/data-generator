@@ -43,13 +43,6 @@ publishing {
     }
 }
 
-sonarqube {
-    properties {
-        // Ignore les tests pour le code smell
-        property "sonar.test.exclusions", "**/*Test.java"
-    }
-}
-
 test {
     useJUnitPlatform()
 }
