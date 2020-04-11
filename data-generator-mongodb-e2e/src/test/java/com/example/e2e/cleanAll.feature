@@ -9,6 +9,11 @@ Feature: Test delete all
     When method post
     Then status 201
     * def getUrl = responseHeaders['Location'][0]
+    * def pause =
+  """
+  function(pause){ java.lang.Thread.sleep(pause) }
+  """
+    * pause(2000)
     Given url getUrl
     When method get
     Then status 200
