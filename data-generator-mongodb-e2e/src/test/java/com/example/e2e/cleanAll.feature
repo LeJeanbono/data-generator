@@ -4,7 +4,7 @@ Feature: Test delete all
     * url baseUrl
 
   Scenario: Delete all datas
-    Given path 'myentity'
+    Given path '/myentity'
     And request {name : 'TOTO'}
     When method post
     Then status 201
@@ -19,10 +19,10 @@ Feature: Test delete all
     Then status 200
     And assert response.name == 'TOTO'
     * url baseUrl
-    Given path 'test/datas'
+    Given path '/test/datas'
     When method delete
     Then status 204
-    Given path 'myentity'
+    Given path '/myentity'
     When method get
     Then status 200
     And match response.page.totalElements == 0

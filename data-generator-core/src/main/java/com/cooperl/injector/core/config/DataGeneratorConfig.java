@@ -1,13 +1,13 @@
 package com.cooperl.injector.core.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ConfigurationProperties(prefix = "data-generator")
 public class DataGeneratorConfig {
 
-    @Value("${data-generator.plural-ressources:false}")
-    private Boolean pluralRessources;
+    private Boolean pluralRessources = false;
 
     public Boolean getPluralRessources() {
         return pluralRessources;

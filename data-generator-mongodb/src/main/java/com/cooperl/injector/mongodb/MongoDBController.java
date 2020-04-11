@@ -44,11 +44,15 @@ public class MongoDBController {
         if (number > 1) {
             List<Object> response = new ArrayList<>();
             for (int i = 0; i < number; i++) {
-                response.add(this.generator.generateObject(body, ressource));
+                Object generated = this.generator.generateObject(body, ressource);
+                mongoTemplate.save(generated);
+                response.add(generated);
             }
             return ResponseEntity.created(null).body(response);
         } else {
-            return ResponseEntity.created(null).body(this.generator.generateObject(body, ressource));
+            Object generated = this.generator.generateObject(body, ressource);
+            mongoTemplate.save(generated);
+            return ResponseEntity.created(null).body(generated);
         }
     }
 
