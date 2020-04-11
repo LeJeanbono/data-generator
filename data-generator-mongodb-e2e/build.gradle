@@ -13,12 +13,12 @@ repositories {
 }
 
 dependencies {
-    compile 'org.projectlombok:lombok:1.18.12'
-    compile project(':data-generator-mongodb')
+    implementation 'org.projectlombok:lombok:1.18.12'
+    implementation project(':data-generator-mongodb')
     implementation 'org.springframework.boot:spring-boot-starter'
-    compile 'org.springframework.boot:spring-boot-starter-web'
-    compile 'org.springframework.boot:spring-boot-starter-data-rest'
-    compile("org.springframework.boot:spring-boot-starter-actuator")
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }

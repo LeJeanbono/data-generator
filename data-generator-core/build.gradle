@@ -2,7 +2,7 @@ repositories {
     mavenCentral()
     mavenLocal()
     maven {
-        url  "https://dl.bintray.com/mockito/maven"
+        url "https://dl.bintray.com/mockito/maven"
     }
 }
 
@@ -15,17 +15,17 @@ version '0.3.0'
 sourceCompatibility = 11.0
 
 dependencies {
-    compile 'org.springframework:spring-context:5.2.5.RELEASE'
-    compile 'org.jeasy:easy-random-core:4.2.0'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.10.2'
-    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.3'
+    implementation 'org.springframework:spring-context:5.2.5.RELEASE'
+    implementation 'org.jeasy:easy-random-core:4.2.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.2'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.3'
     testImplementation "org.assertj:assertj-core:3.15.0"
-    testRuntime('org.junit.jupiter:junit-jupiter-engine:5.6.1')
-    testImplementation('org.junit.jupiter:junit-jupiter-api:5.6.1')
-    testCompile('org.junit.jupiter:junit-jupiter-params:5.6.1')
-    testCompile "org.mockito:mockito-core:3.3.6"
-    testCompile('org.mockito:mockito-junit-jupiter:3.3.6')
-    compile "org.projectlombok:lombok:1.18.12"
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.6.1'
+    testImplementation "org.mockito:mockito-core:3.3.6"
+    testImplementation 'org.mockito:mockito-junit-jupiter:3.3.6'
+    implementation "org.projectlombok:lombok:1.18.12"
     implementation 'com.google.code.gson:gson:2.8.6'
 }
 
