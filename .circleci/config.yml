@@ -26,15 +26,15 @@ jobs:
       - checkout
 
       - run:
-          name: 🏗️ gradle public core
+          name: 🏗️ Publish core
           command: gradle :data-generator-core:publishToMavenLocal
 
       - run:
-          name: gradle core test
+          name: 🧪 Test core
           command: gradle :data-generator-core:test
 
       - run:
-          name: gradle public mongodb
+          name: 🏗️ Publish mongodb
           command: gradle :data-generator-mongodb:publishToMavenLocal
           # Download and cache dependencies
           #- restore_cache:
@@ -44,6 +44,7 @@ jobs:
       #      - v1-dependencies-
 
       - run:
+          name: 🖥️ Compile mongodb E2E
           command: |
             cd data-generator-mongodb-e2e
             gradle dependencies
@@ -55,16 +56,18 @@ jobs:
       #    key: v1-dependencies-{{ checksum "build.gradle" }}
 
       - run:
+          name: 🏎️ Run mongodb E2E
           command: |
             cd data-generator-mongodb-e2e
             gradle bootRun
           background: true
 
       - run:
-          name: Wait for Spring Boot
+          name: ⏱ Wait mongodb E2E start
           command: dockerize -wait tcp://localhost:8080 -timeout 1m
 
       - run:
+          name: 🧪 Test mongodb
           command: |
             cd data-generator-mongodb-e2e
             gradle test
