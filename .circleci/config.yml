@@ -30,6 +30,10 @@ jobs:
           command: gradle :data-generator-core:publishToMavenLocal
 
       - run:
+          name: gradle core test
+          command: gradle :data-generator-core:test
+
+      - run:
           name: gradle public mongodb
           command: gradle :data-generator-mongodb:publishToMavenLocal
           # Download and cache dependencies
@@ -69,6 +73,5 @@ jobs:
           path: ~/repo/data-generator-core/build/test-results
       - store_test_results:
           path: ~/repo/data-generator-mongodb-e2e/build/test-results
-
       - store_artifacts:
           path: ~/repo/data-generator-mongodb-e2e/build/reports/tests/test
