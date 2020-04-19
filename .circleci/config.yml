@@ -39,7 +39,8 @@ jobs:
             # fallback to using the latest cache if no exact match is found
       #      - v1-dependencies-
 
-      - run: gradle data-generator-mongodb-e2e:dependencies
+      - run: cd data-generator-mongodb-e2e
+      - run: gradle dependencies
 
       #- save_cache:
       #    paths:
