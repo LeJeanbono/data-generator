@@ -52,14 +52,19 @@ jobs:
 
       - run:
           name: gradle bootRun data-generator-mongodb-e2e
-          command: gradle :data-generator-mongodb-e2e:bootRun
+          command: |
+            cd data-generator-mongodb-e2e
+            gradle :data-generator-mongodb-e2e:bootRun
           background: true
 
       - run:
           name: Wait for Spring Boot
           command: dockerize -wait tcp://localhost:8080 -timeout 1m
 
-      - run: gradle test
+      - run:
+          command: |
+            cd data-generator-mongodb-e2e
+            gradle test
 
       - store_test_results:
           path: ~/repo/data-generator-core/build/test-results
