@@ -51,10 +51,9 @@ jobs:
       #    key: v1-dependencies-{{ checksum "build.gradle" }}
 
       - run:
-          name: gradle bootRun data-generator-mongodb-e2e
           command: |
             cd data-generator-mongodb-e2e
-            gradle :data-generator-mongodb-e2e:bootRun
+            gradle bootRun
           background: true
 
       - run:
