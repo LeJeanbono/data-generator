@@ -29,11 +29,11 @@ jobs:
 
       - run:
           name: gradle public core
-          command: gradle data-generator-core:publishToMavenLocal
+          command: gradle :data-generator-core:publishToMavenLocal
 
       - run:
           name: gradle public mongodb
-          command: gradle data-generator-mongodb:publishToMavenLocal
+          command: gradle :data-generator-mongodb:publishToMavenLocal
       # Download and cache dependencies
       #- restore_cache:
       #    keys:
