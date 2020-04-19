@@ -25,8 +25,6 @@ jobs:
     steps:
       - checkout
 
-      - run: cd data-generator
-
       - run:
           name: gradle public core
           command: gradle :data-generator-core:publishToMavenLocal

@@ -1,5 +1,0 @@
-task printVersion {
-    doLast {
-        println project.version
-    }
-}
