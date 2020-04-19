@@ -10,12 +10,14 @@ sourceCompatibility = '11'
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.12'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
-    implementation project(':data-generator-mongodb')
+    implementation 'com.cooperl:data-generator-core:0.3.1'
+    implementation 'com.cooperl:data-generator-mongodb:0.3.1'
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation('org.springframework.boot:spring-boot-starter-data-mongodb')
