@@ -1,9 +1,8 @@
-package com.cooperl.injector.mongodb;
+package com.cooperl.injector.mongodb.controller;
 
 import com.cooperl.injector.core.generator.Generator;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Conditional;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +14,9 @@ import java.util.Map;
 @RequestMapping("test/datas")
 public class MongoDBController {
 
-    private MongoTemplate mongoTemplate;
+    private final MongoTemplate mongoTemplate;
 
-    private Generator generator;
+    private final Generator generator;
 
     public MongoDBController(
             MongoTemplate mongoTemplate,
@@ -48,11 +47,11 @@ public class MongoDBController {
                 mongoTemplate.save(generated);
                 response.add(generated);
             }
-            return ResponseEntity.created(null).body(response);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } else {
             Object generated = this.generator.generateObject(body, ressource);
             mongoTemplate.save(generated);
-            return ResponseEntity.created(null).body(generated);
+            return ResponseEntity.status(HttpStatus.CREATED).body(generated);
         }
     }
 

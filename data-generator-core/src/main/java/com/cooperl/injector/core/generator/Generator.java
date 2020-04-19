@@ -3,6 +3,7 @@ package com.cooperl.injector.core.generator;
 import com.cooperl.injector.core.config.DataGeneratorConfig;
 import com.cooperl.injector.core.config.InjectorConfig;
 import com.cooperl.injector.core.exception.GeneratorException;
+import com.cooperl.injector.core.exception.RessourceNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -32,16 +33,16 @@ import static java.text.MessageFormat.format;
 @Service
 public class Generator {
 
-    private EasyRandom easyRandom;
+    private final EasyRandom easyRandom;
 
-    private InjectorConfig injectorConfig;
+    private final InjectorConfig injectorConfig;
 
-    private BeanGenerator beanGenerator;
+    private final BeanGenerator beanGenerator;
 
     @Autowired
     private DataGeneratorConfig dataGeneratorConfig;
 
-    private Gson gson;
+    private final Gson gson;
 
     public Generator(InjectorConfig injectorConfig) {
         this.injectorConfig = injectorConfig;
@@ -124,11 +125,11 @@ public class Generator {
     }
 
     public Class<?> getClassOfRessource(String ressource) {
+        String capitalize = ressource.substring(0, 1).toUpperCase() + ressource.substring(1);
+        String clazz = capitalize;
         for (String bean : injectorConfig.getBeansClassName()) {
             String[] split = bean.split("\\.");
             String className = split[split.length - 1];
-            String capitalize = ressource.substring(0, 1).toUpperCase() + ressource.substring(1);
-            String clazz = capitalize;
             if (dataGeneratorConfig.getPluralRessources()) {
                 clazz = capitalize.substring(0, capitalize.length() - 1);
             }
@@ -136,7 +137,7 @@ public class Generator {
                 return loadAndGetClass(bean);
             }
         }
-        return null;
+        throw new RessourceNotFoundException(format("{0}.class does not exist, did you add @TestData ?", clazz));
     }
 
     private Map<String, Object> copy(Map<String, Object> original) {

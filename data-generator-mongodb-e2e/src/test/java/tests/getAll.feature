@@ -19,3 +19,10 @@ Feature: Get All
     And match response == '#[2]'
     And match response[0].name == 'TOTO'
     And match response[1].name == 'TITI'
+
+  Scenario: Get bad entity
+    Given path '/test/datas/bad'
+    And request {}
+    When method post
+    Then status 400
+    And assert response.message == 'Bad.class does not exist, did you add @TestData ?'

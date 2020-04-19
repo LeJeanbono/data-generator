@@ -15,3 +15,21 @@ Feature: Create
     When method get
     Then status 200
     And match response.name == name
+
+  Scenario: Create bad entity
+    Given path '/test/datas/bad'
+    And request {}
+    When method post
+    Then status 400
+    And assert response.message == 'Bad.class does not exist, did you add @TestData ?'
+
+  Scenario: Create many
+    Given path '/test/datas/myEntity'
+    And param number = 2
+    And request {}
+    When method post
+    Then status 201
+    Given path '/myentity'
+    When method get
+    Then status 200
+    And assert response.page.totalElements == 2

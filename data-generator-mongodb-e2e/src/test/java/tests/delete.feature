@@ -15,3 +15,10 @@ Feature: Delete
     Given path '/myentity/myId'
     When method get
     Then status 404
+
+  Scenario: Create bad entity
+    Given path '/test/datas/bad/123'
+    And request {}
+    When method delete
+    Then status 400
+    And assert response.message == 'Bad.class does not exist, did you add @TestData ?'

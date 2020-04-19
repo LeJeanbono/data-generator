@@ -14,3 +14,10 @@ Feature: Get
     Then status 200
     And match response.id == 'myId'
     And match response.name == 'TOTO'
+
+  Scenario: Get bad entity
+    Given path '/test/datas/bad/123'
+    And request {}
+    When method get
+    Then status 400
+    And assert response.message == 'Bad.class does not exist, did you add @TestData ?'
