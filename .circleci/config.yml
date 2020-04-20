@@ -38,8 +38,8 @@ jobs:
       - codecov/upload
 
       - run:
-        name: 🏗️ Publish core
-        command: gradle :data-generator-core:publishToMavenLocal
+          name: 🏗️ Publish core
+          command: gradle :data-generator-core:publishToMavenLocal
 
       - run:
           name: 🏗️ Publish mongodb
