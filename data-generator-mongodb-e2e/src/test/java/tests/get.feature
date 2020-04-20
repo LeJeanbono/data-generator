@@ -15,6 +15,12 @@ Feature: Get
     And match response.id == 'myId'
     And match response.name == 'TOTO'
 
+  Scenario: Get bad id
+    Given path '/test/datas/myEntity/123'
+    And request {}
+    When method get
+    Then status 404
+
   Scenario: Get bad entity
     Given path '/test/datas/bad/123'
     And request {}

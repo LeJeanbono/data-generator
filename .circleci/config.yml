@@ -28,10 +28,6 @@ jobs:
       - checkout
 
       - run:
-          name: 🏗️ Publish core
-          command: gradle :data-generator-core:publishToMavenLocal
-
-      - run:
           name: 🧪 Test core
           command: gradle :data-generator-core:test
 
@@ -40,6 +36,10 @@ jobs:
           command: gradle :data-generator-core:jacocoTestReport
 
       - codecov/upload
+
+      - run:
+        name: 🏗️ Publish core
+        command: gradle :data-generator-core:publishToMavenLocal
 
       - run:
           name: 🏗️ Publish mongodb

@@ -16,6 +16,12 @@ Feature: Delete
     When method get
     Then status 404
 
+  Scenario: Create bad id
+    Given path '/test/datas/myEntity/123'
+    And request {}
+    When method delete
+    Then status 204
+
   Scenario: Create bad entity
     Given path '/test/datas/bad/123'
     And request {}
