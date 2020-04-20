@@ -14,6 +14,8 @@ public class TestClass {
 
     private List<TestClass2> listObject;
 
+    private TestClass2 object;
+
     public TestClass() {
 
     }
@@ -56,5 +58,13 @@ public class TestClass {
 
     public void setListObject(List<TestClass2> listObject) {
         this.listObject = listObject;
+    }
+
+    public TestClass2 getObject() {
+        return object;
+    }
+
+    public void setObject(TestClass2 object) {
+        this.object = object;
     }
 }

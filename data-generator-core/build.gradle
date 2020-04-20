@@ -8,6 +8,7 @@ repositories {
 
 apply plugin: 'java-library'
 apply plugin: 'maven-publish'
+apply plugin: 'jacoco'
 
 group 'com.cooperl'
 version '0.3.1'
@@ -47,3 +48,12 @@ publishing {
 test {
     useJUnitPlatform()
 }
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled false
+    }
+}
+
+check.dependsOn jacocoTestReport

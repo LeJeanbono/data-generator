@@ -313,7 +313,7 @@ class GeneratorTest {
     }
 
     @Test
-    void d() throws ClassNotFoundException {
+    void generateObjectListNullAttribute() throws ClassNotFoundException {
         HashMap<String, Object> body = new HashMap<>();
         Map<String, Object> object = new HashMap<>();
         object.put("toto", "##NULL##");
@@ -332,6 +332,28 @@ class GeneratorTest {
         assertThat(o.getClass()).isEqualTo(TestClass.class);
         TestClass testClass = (TestClass) o;
         assertThat(testClass.getListObject().get(0).getToto()).isNull();
+        assertThat(testClass.getListObject().get(0).getBibi()).isNotNull();
+    }
+
+    @Test
+    void generateObjectObjectNullAttribute() throws ClassNotFoundException {
+        HashMap<String, Object> body = new HashMap<>();
+        Map<String, Object> object = new HashMap<>();
+        object.put("toto", "##NULL##");
+        body.put("object", object);
+        List<String> classes = new ArrayList<>();
+        classes.add("classes.TestClass");
+        when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
+        when(beanGeneratorMock.getClassLoader()).thenReturn(classLoaderMock);
+        when(dataGeneratorConfig.getPluralRessources()).thenReturn(false);
+        doReturn(TestClass.class).when(classLoaderMock).loadClass("classes.TestClass");
+
+        Object o = generator.generateObject(body, "TestClass");
+
+        assertThat(o.getClass()).isEqualTo(TestClass.class);
+        TestClass testClass = (TestClass) o;
+        assertThat(testClass.getObject().getToto()).isNull();
+        assertThat(testClass.getObject().getBibi()).isNotNull();
     }
 
 }
