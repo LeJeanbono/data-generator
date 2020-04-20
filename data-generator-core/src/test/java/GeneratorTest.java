@@ -240,6 +240,21 @@ class GeneratorTest {
     }
 
     @Test
+    void getClassOfRessourcePlural() throws ClassNotFoundException {
+        List<String> classes = new ArrayList<>();
+        classes.add("classes.Other");
+        classes.add("classes.TestClass");
+        when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
+        when(beanGeneratorMock.getClassLoader()).thenReturn(classLoaderMock);
+        when(dataGeneratorConfig.getPluralRessources()).thenReturn(true);
+        doReturn(TestClass.class).when(classLoaderMock).loadClass("classes.TestClass");
+
+        Class<?> clazz = generator.getClassOfRessource("TestClasss");
+
+        assertThat(clazz).isEqualTo(TestClass.class);
+    }
+
+    @Test
     void generateObject() throws ClassNotFoundException {
         HashMap<String, Object> body = new HashMap<>();
         List<String> classes = new ArrayList<>();
