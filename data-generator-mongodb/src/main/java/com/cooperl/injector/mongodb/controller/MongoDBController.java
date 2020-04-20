@@ -1,5 +1,6 @@
 package com.cooperl.injector.mongodb.controller;
 
+import com.cooperl.injector.core.config.DataGeneratorConfig;
 import com.cooperl.injector.core.generator.Generator;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
@@ -18,16 +19,23 @@ public class MongoDBController {
 
     private final Generator generator;
 
+    private final DataGeneratorConfig dataGeneratorConfig;
+
     public MongoDBController(
             MongoTemplate mongoTemplate,
-            Generator generator
+            Generator generator,
+            DataGeneratorConfig dataGeneratorConfig
     ) {
         this.mongoTemplate = mongoTemplate;
         this.generator = generator;
+        this.dataGeneratorConfig = dataGeneratorConfig;
     }
 
     @DeleteMapping
     public ResponseEntity<?> removeDatas() {
+        if (!dataGeneratorConfig.isEnabled()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         for (Class<?> c : this.generator.getAllClassAnnotated()) {
             mongoTemplate.dropCollection(c);
         }
@@ -40,6 +48,9 @@ public class MongoDBController {
             @RequestParam(value = "number", defaultValue = "1") Integer number,
             @RequestBody Map<String, Object> body
     ) {
+        if (!dataGeneratorConfig.isEnabled()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         if (number > 1) {
             List<Object> response = new ArrayList<>();
             for (int i = 0; i < number; i++) {
@@ -59,6 +70,9 @@ public class MongoDBController {
     public ResponseEntity<?> getDatas(
             @PathVariable String ressource
     ) {
+        if (!dataGeneratorConfig.isEnabled()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         Class<?> c = this.generator.getClassOfRessource(ressource);
         List<?> result = mongoTemplate.findAll(c);
         return ResponseEntity.ok(result);
@@ -69,6 +83,9 @@ public class MongoDBController {
             @PathVariable String ressource,
             @PathVariable String id
     ) {
+        if (!dataGeneratorConfig.isEnabled()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         Class<?> c = this.generator.getClassOfRessource(ressource);
         Object result = mongoTemplate.findById(id, c);
         if (result == null) {
@@ -82,6 +99,9 @@ public class MongoDBController {
             @PathVariable String ressource,
             @PathVariable String id
     ) {
+        if (!dataGeneratorConfig.isEnabled()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         Class<?> c = this.generator.getClassOfRessource(ressource);
         Object o = mongoTemplate.findById(id, c);
         if (o != null) {

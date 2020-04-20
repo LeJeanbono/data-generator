@@ -9,10 +9,25 @@ import org.springframework.context.annotation.Configuration;
 public class DataGeneratorConfig {
 
     @Value("${datagenerator.pluralRessources:false}")
-    private Boolean pluralRessources;
+    private boolean pluralRessources;
 
-    public Boolean getPluralRessources() {
+    @Value("${datagenerator.enabled:true}")
+    private boolean enabled;
+
+    public boolean isPluralRessources() {
         return pluralRessources;
+    }
+
+    public void setPluralRessources(boolean pluralRessources) {
+        this.pluralRessources = pluralRessources;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Bean

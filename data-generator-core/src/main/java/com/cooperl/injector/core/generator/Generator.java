@@ -133,7 +133,7 @@ public class Generator {
         for (String bean : injectorConfig.getBeansClassName()) {
             String[] split = bean.split("\\.");
             String className = split[split.length - 1];
-            if (dataGeneratorConfig.getPluralRessources()) {
+            if (dataGeneratorConfig.isPluralRessources()) {
                 clazz = capitalize.substring(0, capitalize.length() - 1);
             }
             if (className.equals(clazz)) {

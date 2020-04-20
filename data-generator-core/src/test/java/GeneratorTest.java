@@ -220,7 +220,7 @@ class GeneratorTest {
         classes.add("classes.TestClass");
         when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
         when(beanGeneratorMock.getClassLoader()).thenReturn(classLoaderMock);
-        when(dataGeneratorConfig.getPluralRessources()).thenReturn(false);
+        when(dataGeneratorConfig.isPluralRessources()).thenReturn(false);
         doReturn(TestClass.class).when(classLoaderMock).loadClass("classes.TestClass");
 
         Class<?> clazz = generator.getClassOfRessource("TestClass");
@@ -246,7 +246,7 @@ class GeneratorTest {
         classes.add("classes.TestClass");
         when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
         when(beanGeneratorMock.getClassLoader()).thenReturn(classLoaderMock);
-        when(dataGeneratorConfig.getPluralRessources()).thenReturn(true);
+        when(dataGeneratorConfig.isPluralRessources()).thenReturn(true);
         doReturn(TestClass.class).when(classLoaderMock).loadClass("classes.TestClass");
 
         Class<?> clazz = generator.getClassOfRessource("TestClasss");
@@ -262,7 +262,7 @@ class GeneratorTest {
         classes.add("classes.TestClass2");
         when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
         when(beanGeneratorMock.getClassLoader()).thenReturn(classLoaderMock);
-        when(dataGeneratorConfig.getPluralRessources()).thenReturn(false);
+        when(dataGeneratorConfig.isPluralRessources()).thenReturn(false);
         doReturn(TestClass2.class).when(classLoaderMock).loadClass("classes.TestClass2");
 
         Object o = generator.generateObject(body, "TestClass2");
@@ -281,7 +281,7 @@ class GeneratorTest {
         classes.add("classes.TestClass2");
         when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
         when(beanGeneratorMock.getClassLoader()).thenReturn(classLoaderMock);
-        when(dataGeneratorConfig.getPluralRessources()).thenReturn(false);
+        when(dataGeneratorConfig.isPluralRessources()).thenReturn(false);
         doReturn(TestClass2.class).when(classLoaderMock).loadClass("classes.TestClass2");
 
         Object o = generator.generateObject(body, "TestClass2");
@@ -300,7 +300,7 @@ class GeneratorTest {
         classes.add("classes.TestClass");
         when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
         when(beanGeneratorMock.getClassLoader()).thenReturn(classLoaderMock);
-        when(dataGeneratorConfig.getPluralRessources()).thenReturn(false);
+        when(dataGeneratorConfig.isPluralRessources()).thenReturn(false);
         doReturn(TestClass.class).when(classLoaderMock).loadClass("classes.TestClass");
 
         Object o = generator.generateObject(body, "TestClass");
@@ -324,7 +324,7 @@ class GeneratorTest {
         classes.add("classes.TestClass");
         when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
         when(beanGeneratorMock.getClassLoader()).thenReturn(classLoaderMock);
-        when(dataGeneratorConfig.getPluralRessources()).thenReturn(false);
+        when(dataGeneratorConfig.isPluralRessources()).thenReturn(false);
         doReturn(TestClass.class).when(classLoaderMock).loadClass("classes.TestClass");
 
         Object o = generator.generateObject(body, "TestClass");
@@ -345,7 +345,7 @@ class GeneratorTest {
         classes.add("classes.TestClass");
         when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
         when(beanGeneratorMock.getClassLoader()).thenReturn(classLoaderMock);
-        when(dataGeneratorConfig.getPluralRessources()).thenReturn(false);
+        when(dataGeneratorConfig.isPluralRessources()).thenReturn(false);
         doReturn(TestClass.class).when(classLoaderMock).loadClass("classes.TestClass");
 
         Object o = generator.generateObject(body, "TestClass");
