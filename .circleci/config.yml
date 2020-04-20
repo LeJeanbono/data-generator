@@ -39,7 +39,7 @@ jobs:
           name: jacoco
           command: gradle :data-generator-core:jacocoTestReport
 
-      - codecov/upload:
+      - codecov/upload
 
       - run:
           name: 🏗️ Publish mongodb
