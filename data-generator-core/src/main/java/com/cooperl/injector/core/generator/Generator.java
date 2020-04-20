@@ -12,7 +12,6 @@ import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
 import org.jeasy.random.randomizers.range.DoubleRangeRandomizer;
 import org.jeasy.random.randomizers.range.IntegerRangeRandomizer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanGenerator;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ClassUtils;
@@ -39,13 +38,19 @@ public class Generator {
 
     private final BeanGenerator beanGenerator;
 
-    @Autowired
-    private DataGeneratorConfig dataGeneratorConfig;
+    private final DataGeneratorConfig dataGeneratorConfig;
 
     private final Gson gson;
 
-    public Generator(InjectorConfig injectorConfig) {
+    public Generator(
+            InjectorConfig injectorConfig,
+            BeanGenerator beanGenerator,
+            DataGeneratorConfig dataGeneratorConfig
+    ) {
         this.injectorConfig = injectorConfig;
+        this.beanGenerator = beanGenerator;
+        this.dataGeneratorConfig = dataGeneratorConfig;
+        this.gson = new Gson();
         EasyRandomParameters parameters = new EasyRandomParameters()
                 .collectionSizeRange(1, 3)
                 .stringLengthRange(5, 15)
@@ -56,8 +61,6 @@ public class Generator {
                 .scanClasspathForConcreteTypes(true)
                 .randomizationDepth(5);
         easyRandom = new EasyRandom(parameters);
-        beanGenerator = new BeanGenerator();
-        gson = new Gson();
     }
 
     public Object generateObject(Map<String, Object> body, String ressource) {

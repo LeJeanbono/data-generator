@@ -1,7 +1,6 @@
 package com.cooperl.injector.core.annotation;
 
 import com.cooperl.injector.core.config.MyInterfaceScanRegistrar;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;

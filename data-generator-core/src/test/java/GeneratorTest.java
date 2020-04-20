@@ -3,6 +3,7 @@ import classes.TestClass2;
 import com.cooperl.injector.core.config.DataGeneratorConfig;
 import com.cooperl.injector.core.config.InjectorConfig;
 import com.cooperl.injector.core.exception.GeneratorException;
+import com.cooperl.injector.core.exception.RessourceNotFoundException;
 import com.cooperl.injector.core.generator.Generator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,13 +36,14 @@ class GeneratorTest {
     private BeanGenerator beanGeneratorMock;
 
     @Mock
-    private ClassLoader classLoader;
+    private ClassLoader classLoaderMock;
 
     @Mock
     private DataGeneratorConfig dataGeneratorConfig;
 
     @BeforeEach
     void init() {
+        this.generator = null;
         MockitoAnnotations.initMocks(this);
     }
 
@@ -189,9 +191,9 @@ class GeneratorTest {
         classes.add("classes.TestClass2");
         classes.add("classes.TestClass");
         when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
-        when(beanGeneratorMock.getClassLoader()).thenReturn(classLoader);
-        doReturn(TestClass.class).when(classLoader).loadClass("classes.TestClass");
-        doReturn(TestClass2.class).when(classLoader).loadClass("classes.TestClass2");
+        when(beanGeneratorMock.getClassLoader()).thenReturn(classLoaderMock);
+        doReturn(TestClass.class).when(classLoaderMock).loadClass("classes.TestClass");
+        doReturn(TestClass2.class).when(classLoaderMock).loadClass("classes.TestClass2");
 
         List<Class<?>> classs = generator.getAllClassAnnotated();
 
@@ -203,8 +205,8 @@ class GeneratorTest {
         List<String> classes = new ArrayList<>();
         classes.add("classes.TestClass");
         when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
-        when(beanGeneratorMock.getClassLoader()).thenReturn(classLoader);
-        doThrow(ClassNotFoundException.class).when(classLoader).loadClass("classes.TestClass");
+        when(beanGeneratorMock.getClassLoader()).thenReturn(classLoaderMock);
+        doThrow(ClassNotFoundException.class).when(classLoaderMock).loadClass("classes.TestClass");
 
         assertThatThrownBy(() -> generator.getAllClassAnnotated())
                 .isInstanceOf(GeneratorException.class)
@@ -217,9 +219,9 @@ class GeneratorTest {
         classes.add("classes.Other");
         classes.add("classes.TestClass");
         when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
-        when(beanGeneratorMock.getClassLoader()).thenReturn(classLoader);
+        when(beanGeneratorMock.getClassLoader()).thenReturn(classLoaderMock);
         when(dataGeneratorConfig.getPluralRessources()).thenReturn(false);
-        doReturn(TestClass.class).when(classLoader).loadClass("classes.TestClass");
+        doReturn(TestClass.class).when(classLoaderMock).loadClass("classes.TestClass");
 
         Class<?> clazz = generator.getClassOfRessource("TestClass");
 
@@ -232,9 +234,9 @@ class GeneratorTest {
         classes.add("classes.Other");
         when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
 
-        Class<?> clazz = generator.getClassOfRessource("TestClass");
-
-        assertThat(clazz).isEqualTo(null);
+        assertThatThrownBy(() -> generator.getClassOfRessource("TestClass"))
+                .isInstanceOf(RessourceNotFoundException.class)
+                .hasMessageContaining("TestClass.class does not exist, did you add @TestData ?");
     }
 
     @Test
@@ -244,9 +246,9 @@ class GeneratorTest {
         classes.add("classes.Other");
         classes.add("classes.TestClass2");
         when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
-        when(beanGeneratorMock.getClassLoader()).thenReturn(classLoader);
+        when(beanGeneratorMock.getClassLoader()).thenReturn(classLoaderMock);
         when(dataGeneratorConfig.getPluralRessources()).thenReturn(false);
-        doReturn(TestClass2.class).when(classLoader).loadClass("classes.TestClass2");
+        doReturn(TestClass2.class).when(classLoaderMock).loadClass("classes.TestClass2");
 
         Object o = generator.generateObject(body, "TestClass2");
 
@@ -263,9 +265,9 @@ class GeneratorTest {
         List<String> classes = new ArrayList<>();
         classes.add("classes.TestClass2");
         when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
-        when(beanGeneratorMock.getClassLoader()).thenReturn(classLoader);
+        when(beanGeneratorMock.getClassLoader()).thenReturn(classLoaderMock);
         when(dataGeneratorConfig.getPluralRessources()).thenReturn(false);
-        doReturn(TestClass2.class).when(classLoader).loadClass("classes.TestClass2");
+        doReturn(TestClass2.class).when(classLoaderMock).loadClass("classes.TestClass2");
 
         Object o = generator.generateObject(body, "TestClass2");
 
@@ -282,9 +284,9 @@ class GeneratorTest {
         List<String> classes = new ArrayList<>();
         classes.add("classes.TestClass");
         when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
-        when(beanGeneratorMock.getClassLoader()).thenReturn(classLoader);
+        when(beanGeneratorMock.getClassLoader()).thenReturn(classLoaderMock);
         when(dataGeneratorConfig.getPluralRessources()).thenReturn(false);
-        doReturn(TestClass.class).when(classLoader).loadClass("classes.TestClass");
+        doReturn(TestClass.class).when(classLoaderMock).loadClass("classes.TestClass");
 
         Object o = generator.generateObject(body, "TestClass");
 
@@ -306,9 +308,9 @@ class GeneratorTest {
         List<String> classes = new ArrayList<>();
         classes.add("classes.TestClass");
         when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
-        when(beanGeneratorMock.getClassLoader()).thenReturn(classLoader);
+        when(beanGeneratorMock.getClassLoader()).thenReturn(classLoaderMock);
         when(dataGeneratorConfig.getPluralRessources()).thenReturn(false);
-        doReturn(TestClass.class).when(classLoader).loadClass("classes.TestClass");
+        doReturn(TestClass.class).when(classLoaderMock).loadClass("classes.TestClass");
 
         Object o = generator.generateObject(body, "TestClass");
 
