@@ -40,7 +40,6 @@ jobs:
           command: gradle :data-generator-core:jacocoTestReport
 
       - codecov/upload:
-          file: ~/repo/data-generator-core/build/reports/jacoco/test/jacocoTestReport.xml
 
       - run:
           name: 🏗️ Publish mongodb
