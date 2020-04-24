@@ -18,5 +18,6 @@ include 'services:webservice'
 rootProject.name = 'data-generator'
 include 'data-generator-core'
 include 'data-generator-mongodb'
+include 'data-generator-postgres'
 
 project(':data-generator-core').projectDir = file('./data-generator-core')

@@ -1,0 +1,69 @@
+plugins {
+    id 'org.springframework.boot' version '2.2.6.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+    id 'jacoco'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+    implementation 'com.cooperl:data-generator-core:0.3.1'
+    implementation 'com.cooperl:data-generator-postgres:0.3.1'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    runtime('org.postgresql:postgresql:42.2.12')
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'com.intuit.karate:karate-junit4:0.9.5'
+    testImplementation 'com.intuit.karate:karate-apache:0.9.5'
+}
+
+test {
+    // Pull karate options into the runtime
+    systemProperty "karate.options", System.properties.getProperty("karate.options")
+    // Pull karate options into the JVM
+    systemProperty "karate.env", System.properties.getProperty("karate.env")
+    // Ensure tests are always run
+}
+
+sourceSets {
+    test {
+        java {
+            srcDirs = ['src/test/java']
+        }
+        resources {
+            // Using recommended karate project layout where karate feature files
+            // and associated javascript resources sit in same /test/java folders
+            // as their java counterparts.
+            srcDir file('src/test/java')
+            exclude '**/*.java'
+        }
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.5"
+    reportsDir = file("$buildDir/customJacocoReportDir")
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+}
