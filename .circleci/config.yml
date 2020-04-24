@@ -44,24 +44,12 @@ jobs:
       - run:
           name: 🏗️ Publish mongodb
           command: gradle :data-generator-mongodb:publishToMavenLocal
-          # Download and cache dependencies
-          #- restore_cache:
-          #    keys:
-          #      - v1-dependencies-{{ checksum "build.gradle" }}
-          # fallback to using the latest cache if no exact match is found
-      #      - v1-dependencies-
 
       - run:
           name: 🖥️ Compile mongodb E2E
           command: |
             cd data-generator-mongodb-e2e
             gradle dependencies
-
-
-      #- save_cache:
-      #    paths:
-      #      - ~/.gradle
-      #    key: v1-dependencies-{{ checksum "build.gradle" }}
 
       - run:
           name: 🏎️ Run mongodb E2E
