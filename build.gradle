@@ -36,7 +36,7 @@ subprojects {
     }
 
     signing {
-        sign publishing.publications
+        sign publishing.publications.mavenJava
     }
 
     publishing {
