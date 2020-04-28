@@ -1,3 +1,5 @@
+apply plugin: 'jacoco'
+
 sourceCompatibility = 1.11
 targetCompatibility = 1.11
 
@@ -19,3 +21,12 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled false
+    }
+}
+
+check.dependsOn jacocoTestReport
