@@ -4,8 +4,8 @@ allprojects {
     group 'com.github.lejeanbono'
     version '0.3.1'
     repositories {
-        mavenCentral()
         mavenLocal()
+        mavenCentral()
         maven {
             url "https://dl.bintray.com/mockito/maven"
         }
@@ -35,10 +35,6 @@ subprojects {
         archives javadocJar
     }
 
-    signing {
-        sign publishing.publications.mavenJava
-    }
-
     publishing {
         repositories {
             maven {
@@ -63,6 +59,10 @@ subprojects {
                 }
             }
         }
+    }
+
+    signing {
+        sign publishing.publications
     }
 }
 
