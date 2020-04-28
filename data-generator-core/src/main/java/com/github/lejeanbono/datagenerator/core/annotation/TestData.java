@@ -1,4 +1,4 @@
-package com.cooperl.injector.core.annotation;
+package com.github.lejeanbono.datagenerator.core.annotation;
 
 import java.lang.annotation.*;
 

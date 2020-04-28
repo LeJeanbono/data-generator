@@ -1,6 +1,6 @@
-package com.cooperl.injector.mongodb.controller;
+package com.github.lejeanbono.datagenerator.mongodb.controller;
 
-import com.cooperl.injector.core.exception.RessourceNotFoundException;
+import com.github.lejeanbono.datagenerator.core.exception.RessourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

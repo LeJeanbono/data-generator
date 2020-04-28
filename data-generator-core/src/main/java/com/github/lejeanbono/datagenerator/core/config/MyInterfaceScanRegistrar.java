@@ -1,7 +1,7 @@
-package com.cooperl.injector.core.config;
+package com.github.lejeanbono.datagenerator.core.config;
 
-import com.cooperl.injector.core.annotation.EnableDataGenerator;
-import com.cooperl.injector.core.annotation.TestData;
+import com.github.lejeanbono.datagenerator.core.annotation.EnableDataGenerator;
+import com.github.lejeanbono.datagenerator.core.annotation.TestData;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.RootBeanDefinition;

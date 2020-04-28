@@ -1,9 +1,9 @@
-package com.cooperl.injector.core.generator;
+package com.github.lejeanbono.datagenerator.core.generator;
 
-import com.cooperl.injector.core.config.DataGeneratorConfig;
-import com.cooperl.injector.core.config.InjectorConfig;
-import com.cooperl.injector.core.exception.GeneratorException;
-import com.cooperl.injector.core.exception.RessourceNotFoundException;
+import com.github.lejeanbono.datagenerator.core.config.DataGeneratorConfig;
+import com.github.lejeanbono.datagenerator.core.config.InjectorConfig;
+import com.github.lejeanbono.datagenerator.core.exception.GeneratorException;
+import com.github.lejeanbono.datagenerator.core.exception.RessourceNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -24,8 +24,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.util.*;
 
-import static com.cooperl.injector.core.generator.SpecialValueEnum.EMPTY;
-import static com.cooperl.injector.core.generator.SpecialValueEnum.NULL;
+import static com.github.lejeanbono.datagenerator.core.generator.SpecialValueEnum.EMPTY;
+import static com.github.lejeanbono.datagenerator.core.generator.SpecialValueEnum.NULL;
 import static java.lang.reflect.Modifier.isStatic;
 import static java.text.MessageFormat.format;
 

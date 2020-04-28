@@ -1,4 +1,4 @@
-package com.cooperl.injector.core.exception;
+package com.github.lejeanbono.datagenerator.core.exception;
 
 public class RessourceNotFoundException extends RuntimeException {
 

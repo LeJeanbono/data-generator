@@ -1,4 +1,4 @@
-package com.cooperl.injector.mongodb.configuration;
+package com.github.lejeanbono.datagenerator.mongodb.configuration;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

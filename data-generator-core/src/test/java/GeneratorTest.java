@@ -1,10 +1,10 @@
 import classes.TestClass;
 import classes.TestClass2;
-import com.cooperl.injector.core.config.DataGeneratorConfig;
-import com.cooperl.injector.core.config.InjectorConfig;
-import com.cooperl.injector.core.exception.GeneratorException;
-import com.cooperl.injector.core.exception.RessourceNotFoundException;
-import com.cooperl.injector.core.generator.Generator;
+import com.github.lejeanbono.datagenerator.core.config.DataGeneratorConfig;
+import com.github.lejeanbono.datagenerator.core.config.InjectorConfig;
+import com.github.lejeanbono.datagenerator.core.exception.GeneratorException;
+import com.github.lejeanbono.datagenerator.core.exception.RessourceNotFoundException;
+import com.github.lejeanbono.datagenerator.core.generator.Generator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

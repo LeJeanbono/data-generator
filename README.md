@@ -23,6 +23,17 @@ implementation 'com.cooperl:data-generator-mongodb:0.3.1'
 </dependency>
 ```
 ### Activation
+Add `@EnableDataGenerator` and import `DataGeneratorMongoDBConfig`
+```
+@EnableDataGenerator
+@SpringBootApplication
+@Import(DataGeneratorMongoDBConfig.class)
+public class EApplication {
+    public static void main(String[] args) {
+		SpringApplication.run(Application.class, args);
+	}
+}
+```
 In your `application.properties` :
 ```
 datagenerator.pluralRessources=true

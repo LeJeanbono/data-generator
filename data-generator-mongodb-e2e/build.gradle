@@ -4,7 +4,7 @@ plugins {
     id 'java'
 }
 
-group = 'com.example'
+group = 'com.github.lejeanbono'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
@@ -16,7 +16,6 @@ repositories {
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.12'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
-    implementation 'com.cooperl:data-generator-core:0.3.1'
     implementation 'com.cooperl:data-generator-mongodb:0.3.1'
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'

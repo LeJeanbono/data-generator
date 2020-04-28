@@ -1,4 +1,4 @@
-package com.cooperl.injector.core.config;
+package com.github.lejeanbono.datagenerator.core.config;
 
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.config.BeanDefinition;

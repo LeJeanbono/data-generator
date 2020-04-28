@@ -1,6 +1,6 @@
-package com.cooperl.injector.core.annotation;
+package com.github.lejeanbono.datagenerator.core.annotation;
 
-import com.cooperl.injector.core.config.MyInterfaceScanRegistrar;
+import com.github.lejeanbono.datagenerator.core.config.MyInterfaceScanRegistrar;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;

@@ -1,7 +1,7 @@
-package com.cooperl.injector.mongodb.controller;
+package com.github.lejeanbono.datagenerator.mongodb.controller;
 
-import com.cooperl.injector.core.config.DataGeneratorConfig;
-import com.cooperl.injector.core.generator.Generator;
+import com.github.lejeanbono.datagenerator.core.config.DataGeneratorConfig;
+import com.github.lejeanbono.datagenerator.core.generator.Generator;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,34 +1,9 @@
-apply plugin: 'java-library'
-apply plugin: 'maven-publish'
-
-group 'com.cooperl'
-version '0.3.1'
-
-repositories {
-    mavenCentral()
-    mavenLocal()
-}
-
 dependencies {
-    implementation project(':data-generator-core')
+    compile project(':data-generator-core')
     implementation 'org.springframework:spring-web:5.2.5.RELEASE'
     implementation 'org.springframework:spring-webmvc:5.2.5.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.2.6.RELEASE'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.3'
     testImplementation('junit:junit:4.13')
     runtime('org.postgresql:postgresql:42.2.12')
-}
-
-task sourcesJar(type: Jar) {
-    from sourceSets.main.allJava
-    classifier = 'sources'
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-            artifact sourcesJar
-        }
-    }
 }

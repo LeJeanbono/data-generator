@@ -1,4 +1,4 @@
-package com.cooperl.injector.core.generator;
+package com.github.lejeanbono.datagenerator.core.generator;
 
 public enum SpecialValueEnum {
     NULL("##NULL##"),

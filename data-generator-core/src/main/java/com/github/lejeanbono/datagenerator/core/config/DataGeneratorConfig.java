@@ -1,4 +1,4 @@
-package com.cooperl.injector.core.config;
+package com.github.lejeanbono.datagenerator.core.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cglib.beans.BeanGenerator;
