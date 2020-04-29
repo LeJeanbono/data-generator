@@ -62,6 +62,9 @@ subprojects {
     }
 
     signing {
+        required {
+            !noPublish
+        }
         sign publishing.publications
     }
 }
