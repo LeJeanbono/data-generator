@@ -1,7 +1,7 @@
 package com.example.e2e;
 
-import com.cooperl.injector.core.annotation.EnableDataGenerator;
 import com.cooperl.injector.postgres.configuration.DataGeneratorPostgresConfig;
+import com.github.lejeanbono.datagenerator.core.annotation.EnableDataGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;

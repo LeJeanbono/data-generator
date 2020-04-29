@@ -1,4 +1,4 @@
-package com.cooperl.injector.postgres.controller;
+package com.github.lejeanbono.datagenerator.postgres.controller;
 
 import com.github.lejeanbono.datagenerator.core.config.DataGeneratorConfig;
 import com.github.lejeanbono.datagenerator.core.generator.Generator;

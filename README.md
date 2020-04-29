@@ -5,19 +5,19 @@
 ## Getting started
 ### Gradle
 ```groovy
-implementation 'com.cooperl:data-generator-core:0.3.1'
-implementation 'com.cooperl:data-generator-mongodb:0.3.1'
+implementation 'com.github.lejeanbono:data-generator-core:0.3.1'
+implementation 'com.github.lejeanbono:data-generator-mongodb:0.3.1'
 ```
 ### Maven
 ```xml
 <!-- replace here with the latest version -->
 <dependency>
-    <groupId>com.cooperl</groupId>
+    <groupId>com.github.lejeanbono</groupId>
     <artifactId>data-generator-core</artifactId>
     <version>0.3.1</version>
 </dependency>
 <dependency>
-    <groupId>com.cooperl</groupId>
+    <groupId>com.github.lejeanbono</groupId>
     <artifactId>data-generator-mongodb</artifactId>
     <version>0.3.1</version>
 </dependency>

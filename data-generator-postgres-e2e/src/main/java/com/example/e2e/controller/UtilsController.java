@@ -1,8 +1,8 @@
 package com.example.e2e.controller;
 
-import com.cooperl.injector.core.config.DataGeneratorConfig;
 import com.example.e2e.entity.Configuration;
 import com.example.e2e.repository.MyEntityRepository;
+import com.github.lejeanbono.datagenerator.core.config.DataGeneratorConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
