@@ -20,6 +20,8 @@ allprojects {
         from javadoc.destinationDir
     }
 
+    publishToMavenLocal.dependsOn.remove("signMavenJavaPublication")
+
 }
 
 subprojects {
