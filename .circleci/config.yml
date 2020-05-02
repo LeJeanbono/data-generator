@@ -73,3 +73,11 @@ jobs:
           path: ~/repo/data-generator-mongodb-e2e/build/test-results
       - store_artifacts:
           path: ~/repo/data-generator-mongodb-e2e/build/reports/tests/test
+
+workflows:
+  version: 2
+  build:
+    parallelism: 2
+    jobs:
+      - build
+      - mongodb
