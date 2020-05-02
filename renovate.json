@@ -11,5 +11,14 @@
   },
   "minor": {
     "automerge": false
-  }
+  },
+  "hostRules": [
+    {
+      "endpoint": "https://oss.sonatype.org/service/local/staging/deploy/maven2",
+      "username": "LeJeanbono",
+      "encrypted": {
+        "password": "xHSWC/gA90TBY7eqSA0Uiw5Vn3nBmFnDlMpyBMPqM8jjx8rRColtxZRFbLTLga5FFlwjb0k57ZUq+xf//i6KZZ8ASyEpCFgklJISJH+cC1VVaXgIQAOwJRAh9hUDx4BuN76YxB7x+ua0wSi5AwwDpfCYhiNFJZ7hmT1fs4lgCk2JW4OWRqFtKfgmI9hrQBIifxQ/uevV/82mOc0I1b6CKkOsNRBfSuSSq72wfaDv4cEUYZxh9hliW4pgkl/c5od5cLvguuu3jaB3XPr8E/sTTmYFpXSiUMzIF1lMGUEJq0pzS3wGahi7b7ZfsXgrZxEKUCgNH8/TsQFob2o371Wlzg=="
+      }
+    }
+  ]
 }

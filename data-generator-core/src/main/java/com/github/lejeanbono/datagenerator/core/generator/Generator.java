@@ -172,33 +172,18 @@ public class Generator {
     }
 
     private Class<?> getSetterParamClass(Object obj, String fieldName) {
-        PropertyDescriptor pd;
-        try {
-            pd = new PropertyDescriptor(fieldName, obj.getClass());
-        } catch (IntrospectionException e) {
-            throw new GeneratorException(format("Cannot get property {0},  for class {1}", fieldName, obj.getClass()), e);
-        }
+        PropertyDescriptor pd = getPropertyDescriptor(obj.getClass(), fieldName);
         return pd.getWriteMethod().getParameterTypes()[0];
     }
 
     private Class<?> getSetterGenericParamClass(Object obj, String fieldName) {
-        PropertyDescriptor pd;
-        try {
-            pd = new PropertyDescriptor(fieldName, obj.getClass());
-        } catch (IntrospectionException e) {
-            throw new GeneratorException(format("Cannot get property {0},  for class {1}", fieldName, obj.getClass()), e);
-        }
+        PropertyDescriptor pd = getPropertyDescriptor(obj.getClass(), fieldName);
         ParameterizedType stringListType = (ParameterizedType) pd.getWriteMethod().getGenericParameterTypes()[0];
         return (Class<?>) stringListType.getActualTypeArguments()[0];
     }
 
     private void callSetter(Object obj, String fieldName, Object value) {
-        PropertyDescriptor pd;
-        try {
-            pd = new PropertyDescriptor(fieldName, obj.getClass());
-        } catch (IntrospectionException e) {
-            throw new GeneratorException(format("Cannot get property {0},  for class {1}", fieldName, obj.getClass()), e);
-        }
+        PropertyDescriptor pd = getPropertyDescriptor(obj.getClass(), fieldName);
         try {
             pd.getWriteMethod().invoke(obj, value);
         } catch (IllegalAccessException | InvocationTargetException e) {
@@ -208,16 +193,22 @@ public class Generator {
 
     private Object callGetter(Object obj, String fieldName) {
         PropertyDescriptor pd;
-        try {
-            pd = new PropertyDescriptor(fieldName, obj.getClass());
-        } catch (IntrospectionException e) {
-            throw new GeneratorException(format("Cannot get property {0},  for class {1}", fieldName, obj.getClass()), e);
-        }
+        pd = getPropertyDescriptor(obj.getClass(), fieldName);
         try {
             return pd.getReadMethod().invoke(obj);
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new GeneratorException(format("Cannot call getter {0},  for class {1}", pd.getReadMethod().getName(), obj.getClass()), e);
         }
+    }
+
+    private PropertyDescriptor getPropertyDescriptor(Class<?> clazz, String fieldName) {
+        PropertyDescriptor pd;
+        try {
+            pd = new PropertyDescriptor(fieldName, clazz);
+        } catch (IntrospectionException e) {
+            throw new GeneratorException(format("Cannot get property {0},  for class {1}", fieldName, clazz), e);
+        }
+        return pd;
     }
 
     private void reinitSpecialValue(Map<String, Object> body) {

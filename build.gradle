@@ -62,10 +62,12 @@ subprojects {
     }
 
     signing {
-        required {
-            !noPublish
+        if (project.hasProperty('signing.keyId') && project.hasProperty('signing.password') && project.hasProperty('signing.secretKeyRingFile')) {
+            required {
+                !noPublish
+            }
+            sign publishing.publications
         }
-        sign publishing.publications
     }
 }
 

@@ -3,7 +3,7 @@ repositories{
 }
 
 dependencies {
-    compile project(':data-generator-core')
+    api project(':data-generator-core')
     implementation 'org.springframework:spring-web:5.2.5.RELEASE'
     implementation 'org.springframework:spring-webmvc:5.2.5.RELEASE'
     implementation 'org.springframework.data:spring-data-mongodb:2.2.6.RELEASE'
