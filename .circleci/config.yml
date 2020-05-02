@@ -8,19 +8,11 @@ orbs:
 jobs:
   build:
     docker:
-      # specify the version you desire here
       - image: circleci/openjdk:11.0.6-jdk-stretch
-      - image: circleci/mongo:4.2.6
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
 
     working_directory: ~/repo
 
     environment:
-      # Customize the JVM maximum heap limit
       JVM_OPTS: -Xmx3200m
       TERM: dumb
 
@@ -37,6 +29,15 @@ jobs:
 
       - codecov/upload
 
+      - store_test_results:
+          path: ~/repo/data-generator-core/build/test-results
+  mongodb:
+    docker:
+      - image: circleci/mongo:4.2.6
+
+    working_directory: ~/repo
+
+    steps:
       - run:
           name: 🏗️ Publish core
           command: gradle :data-generator-core:publishToMavenLocal
@@ -68,8 +69,6 @@ jobs:
             cd data-generator-mongodb-e2e
             gradle test
 
-      - store_test_results:
-          path: ~/repo/data-generator-core/build/test-results
       - store_test_results:
           path: ~/repo/data-generator-mongodb-e2e/build/test-results
       - store_artifacts:
