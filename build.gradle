@@ -2,7 +2,7 @@ apply plugin: 'java-library'
 
 allprojects {
     group 'com.github.lejeanbono'
-    version '0.3.1'
+    version '0.3.2'
     repositories {
         mavenLocal()
         mavenCentral()

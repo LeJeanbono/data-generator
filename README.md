@@ -5,8 +5,8 @@
 ## Getting started
 ### Gradle
 ```groovy
-implementation 'com.github.lejeanbono:data-generator-core:0.3.1'
-implementation 'com.github.lejeanbono:data-generator-mongodb:0.3.1'
+implementation 'com.github.lejeanbono:data-generator-core:0.3.2'
+implementation 'com.github.lejeanbono:data-generator-mongodb:0.3.2'
 ```
 ### Maven
 ```xml
@@ -14,12 +14,12 @@ implementation 'com.github.lejeanbono:data-generator-mongodb:0.3.1'
 <dependency>
     <groupId>com.github.lejeanbono</groupId>
     <artifactId>data-generator-core</artifactId>
-    <version>0.3.1</version>
+    <version>0.3.2</version>
 </dependency>
 <dependency>
     <groupId>com.github.lejeanbono</groupId>
     <artifactId>data-generator-mongodb</artifactId>
-    <version>0.3.1</version>
+    <version>0.3.2</version>
 </dependency>
 ```
 ### Activation
