@@ -88,8 +88,8 @@ workflows:
     jobs:
       - build
       - core
-        requires:
-          - build
+          requires:
+            - build
       - mongodb
-        requires:
-          - build
+          requires:
+            - build
