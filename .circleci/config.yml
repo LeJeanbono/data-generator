@@ -87,9 +87,9 @@ workflows:
   build_and_test:
     jobs:
       - build
-      - core
+      - core:
           requires:
             - build
-      - mongodb
+      - mongodb:
           requires:
             - build
