@@ -57,6 +57,7 @@ jobs:
     working_directory: ~/repo
 
     steps:
+      - *restore_repo
       - run:
           name: 🏗️ Publish core
           command: gradle :data-generator-core:publishToMavenLocal
