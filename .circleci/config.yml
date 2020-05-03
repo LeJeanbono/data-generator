@@ -149,3 +149,6 @@ workflows:
       - mongodb:
           requires:
             - build
+      - postgres:
+          requires:
+            - build
