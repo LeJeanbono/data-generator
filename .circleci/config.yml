@@ -9,7 +9,7 @@ references:
   restore_repo: &restore_repo
     restore_cache:
       keys:
-        - sources-{{ epoch }}
+        - sources-{{ .BuildNum }}
 jobs:
   build:
     docker:
@@ -22,7 +22,7 @@ jobs:
       - *restore_repo
       - checkout
       - save_cache:
-          key: sources-{{ epoch }}
+          key: sources-{{ .BuildNum }}
           paths:
             - .
   core:
