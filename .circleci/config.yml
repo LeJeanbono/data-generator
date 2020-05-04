@@ -9,7 +9,7 @@ references:
   restore_repo: &restore_repo
     restore_cache:
       keys:
-        - sources
+        - sources-{{ .Revision }}
 jobs:
   build:
     docker:
@@ -22,7 +22,7 @@ jobs:
       - *restore_repo
       - checkout
       - save_cache:
-          key: sources
+          key: sources-{{ .Revision }}
           paths:
             - .
   core:
@@ -94,6 +94,54 @@ jobs:
       - store_artifacts:
           path: ~/repo/data-generator-mongodb-e2e/build/reports/tests/test
 
+  postgres:
+    docker:
+      - image: circleci/openjdk:11.0.6-jdk-stretch
+      - image: circleci/postgres:12.2-postgis-ram
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+
+    working_directory: ~/repo
+
+    steps:
+      - *restore_repo
+      - run:
+          name: 🏗️ Publish core
+          command: gradle :data-generator-core:publishToMavenLocal
+
+      - run:
+          name: 🏗️ Publish postgres
+          command: gradle :data-generator-postgres:publishToMavenLocal
+
+      - run:
+          name: 🖥️ Compile postgres E2E
+          command: |
+            cd data-generator-postgres-e2e
+            gradle dependencies
+
+      - run:
+          name: 🏎️ Run postgres E2E
+          command: |
+            cd data-generator-postgres-e2e
+            gradle bootRun
+          background: true
+
+      - run:
+          name: ⏱ Wait postgres E2E start
+          command: dockerize -wait tcp://localhost:8080 -timeout 1m
+
+      - run:
+          name: 🧪 Test postgres
+          command: |
+            cd data-generator-postgres-e2e
+            gradle test
+
+      - store_test_results:
+          path: ~/repo/data-generator-postgres-e2e/build/test-results
+      - store_artifacts:
+          path: ~/repo/data-generator-postgres-e2e/build/reports/tests/test
 workflows:
   version: 2
   build_and_test:
@@ -103,5 +151,8 @@ workflows:
           requires:
             - build
       - mongodb:
+          requires:
+            - build
+      - postgres:
           requires:
             - build
