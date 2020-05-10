@@ -20,15 +20,15 @@ public class UtilsController {
     public ResponseEntity<?> cleanAll() {
         myEntityRepository.deleteAll();
         Configuration configuration = new Configuration();
-        dataGeneratorConfig.setEnabled(configuration.isEnabled());
-        dataGeneratorConfig.setPluralRessources(configuration.isPluralRessources());
+        dataGeneratorConfig.setEnabled(configuration.getEnabled());
+        dataGeneratorConfig.setPluralRessources(configuration.getPluralRessources());
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/config")
     public ResponseEntity<?> changeConfig(@RequestBody Configuration configuration) {
-        dataGeneratorConfig.setEnabled(configuration.isEnabled());
-        dataGeneratorConfig.setPluralRessources(configuration.isPluralRessources());
+        dataGeneratorConfig.setEnabled(configuration.getEnabled());
+        dataGeneratorConfig.setPluralRessources(configuration.getPluralRessources());
         return ResponseEntity.noContent().build();
     }
 }

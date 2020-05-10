@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class Configuration {
 
-    private boolean enabled = true;
+    private Boolean enabled = true;
 
-    private boolean pluralRessources = false;
+    private Boolean pluralRessources = false;
 
 }

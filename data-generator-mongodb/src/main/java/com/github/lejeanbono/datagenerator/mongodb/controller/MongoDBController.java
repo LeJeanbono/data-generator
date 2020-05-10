@@ -3,6 +3,7 @@ package com.github.lejeanbono.datagenerator.mongodb.controller;
 import com.github.lejeanbono.datagenerator.core.config.DataGeneratorConfig;
 import com.github.lejeanbono.datagenerator.core.generator.Generator;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 @RestController
 @RequestMapping("test/datas")
@@ -68,13 +71,16 @@ public class MongoDBController {
 
     @GetMapping(path = "/{ressource}")
     public ResponseEntity<?> getDatas(
+            @RequestParam Map<String, String> allRequestParams,
             @PathVariable String ressource
     ) {
         if (!dataGeneratorConfig.isEnabled()) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         Class<?> c = this.generator.getClassOfRessource(ressource);
-        List<?> result = mongoTemplate.findAll(c);
+        Query q = new Query();
+        allRequestParams.forEach((key, value) -> q.addCriteria(where(key).is(value)));
+        List<?> result = mongoTemplate.find(q, c);
         return ResponseEntity.ok(result);
     }
 
