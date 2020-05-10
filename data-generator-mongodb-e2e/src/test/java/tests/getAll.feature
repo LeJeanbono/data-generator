@@ -20,6 +20,22 @@ Feature: Get All
     And match response[0].name == 'TOTO'
     And match response[1].name == 'TITI'
 
+  Scenario: Get all filtered
+    Given path '/myentity'
+    And request {id: 'myId', name : 'TOTO'}
+    When method post
+    Then status 201
+    Given path '/myentity'
+    And request {id: 'myId2', name : 'TITI'}
+    When method post
+    Then status 201
+    Given path '/test/datas/myEntity'
+    And param name = 'TITI'
+    When method get
+    Then status 200
+    And match response == '#[1]'
+    And match response[0].name == 'TITI'
+
   Scenario: Get bad entity
     Given path '/test/datas/bad'
     And request {}

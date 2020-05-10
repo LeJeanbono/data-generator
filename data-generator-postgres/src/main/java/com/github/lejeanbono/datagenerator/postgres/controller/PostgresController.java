@@ -7,6 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,13 +73,19 @@ public class PostgresController {
 
     @GetMapping(path = "/{ressource}")
     public ResponseEntity<?> getDatas(
+            @RequestParam Map<String, String> allRequestParams,
             @PathVariable String ressource
     ) {
         if (!dataGeneratorConfig.isEnabled()) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         Class<?> c = this.generator.getClassOfRessource(ressource);
-        List<?> result = entityManager.createQuery("SELECT a FROM " + c.getSimpleName() + " a").getResultList();
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery q = cb.createQuery(c);
+        Root root = q.from(c);
+        q.select(root);
+        allRequestParams.forEach((key, value) -> q.where(cb.equal(root.get(key), value)));
+        List<?> result = entityManager.createQuery(q).getResultList();
         return ResponseEntity.ok(result);
     }
 
