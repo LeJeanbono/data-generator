@@ -38,11 +38,11 @@ jobs:
       - *restore_repo
       - run:
           name: 🧪 Test core
-          command: gradlew :data-generator-core:test
+          command: ./gradlew :data-generator-core:test
 
       - run:
           name: jacoco
-          command: gradlew :data-generator-core:jacocoTestReport
+          command: ./gradlew :data-generator-core:jacocoTestReport
 
       - codecov/upload
 
@@ -59,23 +59,23 @@ jobs:
       - *restore_repo
       - run:
           name: 🏗️ Publish core
-          command: gradlew :data-generator-core:publishToMavenLocal
+          command: ./gradlew :data-generator-core:publishToMavenLocal
 
       - run:
           name: 🏗️ Publish mongodb
-          command: gradlew :data-generator-mongodb:publishToMavenLocal
+          command: ./gradlew :data-generator-mongodb:publishToMavenLocal
 
       - run:
           name: 🖥️ Compile mongodb E2E
           command: |
             cd data-generator-mongodb-e2e
-            gradlew dependencies
+            ./gradlew dependencies
 
       - run:
           name: 🏎️ Run mongodb E2E
           command: |
             cd data-generator-mongodb-e2e
-            gradlew bootRun
+            ./gradlew bootRun
           background: true
 
       - run:
@@ -86,7 +86,7 @@ jobs:
           name: 🧪 Test mongodb
           command: |
             cd data-generator-mongodb-e2e
-            gradlew test
+            ./gradlew test
 
       - store_test_results:
           path: ~/repo/data-generator-mongodb-e2e/build/test-results
@@ -108,23 +108,23 @@ jobs:
       - *restore_repo
       - run:
           name: 🏗️ Publish core
-          command: gradlew :data-generator-core:publishToMavenLocal
+          command: ./gradlew :data-generator-core:publishToMavenLocal
 
       - run:
           name: 🏗️ Publish postgres
-          command: gradlew :data-generator-postgres:publishToMavenLocal
+          command: ./gradlew :data-generator-postgres:publishToMavenLocal
 
       - run:
           name: 🖥️ Compile postgres E2E
           command: |
             cd data-generator-postgres-e2e
-            gradlew dependencies
+            ./gradlew dependencies
 
       - run:
           name: 🏎️ Run postgres E2E
           command: |
             cd data-generator-postgres-e2e
-            gradlew bootRun
+            ./gradlew bootRun
           background: true
 
       - run:
@@ -135,7 +135,7 @@ jobs:
           name: 🧪 Test postgres
           command: |
             cd data-generator-postgres-e2e
-            gradlew test
+            ./gradlew test
 
       - store_test_results:
           path: ~/repo/data-generator-postgres-e2e/build/test-results
