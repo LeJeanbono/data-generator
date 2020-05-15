@@ -73,6 +73,7 @@ jobs:
           name: 🖥️ Compile mongodb E2E
           command: |
             cd data-generator-mongodb-e2e
+            chmod +x gradlew
             ./gradlew dependencies
 
       - run:
@@ -124,6 +125,7 @@ jobs:
           name: 🖥️ Compile postgres E2E
           command: |
             cd data-generator-postgres-e2e
+            chmod +x gradlew
             ./gradlew dependencies
 
       - run:
