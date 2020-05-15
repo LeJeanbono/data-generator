@@ -61,7 +61,9 @@ jobs:
       - *restore_repo
       - run:
           name: 🏗️ Publish core
-          command: ./gradlew :data-generator-core:publishToMavenLocal
+          command: |
+            chmod +x gradlew
+            ./gradlew :data-generator-core:publishToMavenLocal
 
       - run:
           name: 🏗️ Publish mongodb
@@ -110,7 +112,9 @@ jobs:
       - *restore_repo
       - run:
           name: 🏗️ Publish core
-          command: ./gradlew :data-generator-core:publishToMavenLocal
+          command: |
+            chmod +x gradlew
+            ./gradlew :data-generator-core:publishToMavenLocal
 
       - run:
           name: 🏗️ Publish postgres
