@@ -101,7 +101,7 @@ jobs:
   postgres:
     docker:
       - image: circleci/openjdk:11.0.6-jdk-stretch
-      - image: circleci/postgres:12.2-postgis-ram
+      - image: circleci/postgres:12.3-postgis-ram
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
