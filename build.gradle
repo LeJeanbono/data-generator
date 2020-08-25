@@ -111,6 +111,7 @@ def customizePom(pom) {
             }
             developers {
                 developer {
+                    id 'LeJeanbono'
                     name 'Jean-Michel Leclercq'
                 }
             }

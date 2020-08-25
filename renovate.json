@@ -9,9 +9,6 @@
   "major": {
     "automerge": false
   },
-  "minor": {
-    "automerge": false
-  },
   "hostRules": [
     {
       "endpoint": "https://oss.sonatype.org/service/local/staging/deploy/maven2",
