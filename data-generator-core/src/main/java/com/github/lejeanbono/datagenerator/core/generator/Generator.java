@@ -239,12 +239,12 @@ public class Generator {
                 callSetter(myPojo, val, new ArrayList<>());
             } else if (shallowVal instanceof Map) {
                 applySpecialValue((Map<String, Object>) shallowVal, callGetter(myPojo, val));
-            } else if (shallowVal instanceof List) {
-                List<?> list = (List<?>) callGetter(myPojo, val);
-                List<?> listOfMap = ((List<?>) shallowVal);
+            } else if (shallowVal instanceof Collection) {
+                Collection<?> list = (Collection<?>) callGetter(myPojo, val);
+                Collection<?> listOfMap = ((Collection<?>) shallowVal);
                 for (int i = 0; i < listOfMap.size(); i++) {
-                    if (listOfMap.get(i) instanceof Map) {
-                        applySpecialValue((Map<String, Object>) listOfMap.get(i), list.get(i));
+                    if (listOfMap.toArray()[i] instanceof Map) {
+                        applySpecialValue((Map<String, Object>) listOfMap.toArray()[i], list.toArray()[i]);
                     }
                 }
             }

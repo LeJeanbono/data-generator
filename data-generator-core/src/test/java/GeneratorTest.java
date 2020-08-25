@@ -1,3 +1,4 @@
+import classes.SetClass;
 import classes.TestClass;
 import classes.TestClass2;
 import com.github.lejeanbono.datagenerator.core.config.DataGeneratorConfig;
@@ -354,6 +355,25 @@ class GeneratorTest {
         TestClass testClass = (TestClass) o;
         assertThat(testClass.getObject().getToto()).isNull();
         assertThat(testClass.getObject().getBibi()).isNotNull();
+    }
+
+    @Test
+    void generateObjectSet() throws ClassNotFoundException {
+        HashMap<String, Object> body = new HashMap<>();
+        List<String> mySet = new ArrayList<>();
+        mySet.add("test");
+        mySet.add("test2");
+        body.put("mySet", mySet);
+        List<String> classes = new ArrayList<>();
+        classes.add("classes.SetClass");
+        when(injectorConfigMock.getBeansClassName()).thenReturn(classes);
+        when(beanGeneratorMock.getClassLoader()).thenReturn(classLoaderMock);
+        when(dataGeneratorConfig.isPluralRessources()).thenReturn(false);
+        doReturn(SetClass.class).when(classLoaderMock).loadClass("classes.SetClass");
+
+        Object o = generator.generateObject(body, "SetClass");
+
+        assertThat(o.getClass()).isEqualTo(SetClass.class);
     }
 
 }
