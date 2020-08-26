@@ -6,7 +6,7 @@ dependencies {
     api project(':data-generator-core')
     implementation 'org.springframework:spring-web:5.2.8.RELEASE'
     implementation 'org.springframework:spring-webmvc:5.2.8.RELEASE'
-    implementation 'org.springframework.data:spring-data-mongodb:3.0.1.RELEASE'
+    implementation 'org.springframework.data:spring-data-mongodb:3.0.3.RELEASE'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.2'
     testImplementation('junit:junit:4.13')
 }
