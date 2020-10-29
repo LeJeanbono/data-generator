@@ -2,7 +2,7 @@ dependencies {
     api project(':data-generator-core')
     implementation 'org.springframework:spring-web:5.3.0'
     implementation 'org.springframework:spring-webmvc:5.3.0'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.3.4.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.3.5.RELEASE'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.3'
     testImplementation('junit:junit:4.13.1')
     runtimeOnly('org.postgresql:postgresql:42.2.18')
