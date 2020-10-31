@@ -127,20 +127,45 @@ public class Generator {
         return result;
     }
 
-    public Class<?> getClassOfRessource(String ressource) {
-        String capitalize = ressource.substring(0, 1).toUpperCase() + ressource.substring(1);
-        String clazz = capitalize;
+    public List<String> getAllClassNameAnnotated() {
+        List<String> result = new ArrayList<>();
         for (String bean : injectorConfig.getBeansClassName()) {
-            String[] split = bean.split("\\.");
-            String className = split[split.length - 1];
-            if (dataGeneratorConfig.isPluralRessources()) {
-                clazz = capitalize.substring(0, capitalize.length() - 1);
-            }
+            result.add(getRessourceFromClassName(getClassNameFromBeanName(bean)));
+        }
+        return result;
+    }
+
+    public Class<?> getClassOfRessource(String ressource) {
+        String clazz = getClassNameFromRessource(ressource);
+        for (String bean : injectorConfig.getBeansClassName()) {
+            String className = getClassNameFromBeanName(bean);
             if (className.equals(clazz)) {
                 return loadAndGetClass(bean);
             }
         }
         throw new RessourceNotFoundException(format("{0}.class does not exist, did you add @TestData ?", clazz));
+    }
+
+    private String getClassNameFromRessource(String ressource) {
+        String capitalize = ressource.substring(0, 1).toUpperCase() + ressource.substring(1);
+        String clazz = capitalize;
+        if (dataGeneratorConfig.isPluralRessources()) {
+            clazz = capitalize.substring(0, capitalize.length() - 1);
+        }
+        return clazz;
+    }
+
+    private String getRessourceFromClassName(String className) {
+        String ressource = className.substring(0, 1).toLowerCase() + className.substring(1);
+        if (dataGeneratorConfig.isPluralRessources()) {
+            ressource += "s";
+        }
+        return ressource;
+    }
+
+    private String getClassNameFromBeanName(String beanName) {
+        String[] split = beanName.split("\\.");
+        return split[split.length - 1];
     }
 
     private Map<String, Object> copy(Map<String, Object> original) {

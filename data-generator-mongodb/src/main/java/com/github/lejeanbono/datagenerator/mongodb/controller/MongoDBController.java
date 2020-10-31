@@ -34,6 +34,11 @@ public class MongoDBController {
         this.dataGeneratorConfig = dataGeneratorConfig;
     }
 
+    @GetMapping
+    public ResponseEntity<List<String>> getAllDatasRessources() {
+        return ResponseEntity.ok(this.generator.getAllClassNameAnnotated());
+    }
+
     @DeleteMapping
     public ResponseEntity<?> removeDatas() {
         if (!dataGeneratorConfig.isEnabled()) {
