@@ -13,7 +13,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.7.0'
     testImplementation "org.mockito:mockito-core:3.6.25"
-    testImplementation 'org.mockito:mockito-junit-jupiter:3.6.23'
+    testImplementation 'org.mockito:mockito-junit-jupiter:3.6.25'
     implementation "org.projectlombok:lombok:1.18.16"
     implementation 'com.google.code.gson:gson:2.8.6'
 }
