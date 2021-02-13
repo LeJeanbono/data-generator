@@ -1,7 +1,7 @@
 version: "2"
 services:
   postgres:
-    image: circleci/postgres:12.5-postgis
+    image: circleci/postgres:12.6-postgis
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
