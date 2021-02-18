@@ -5,5 +5,5 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.4.3'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.1'
     testImplementation('junit:junit:4.13.2')
-    runtimeOnly('org.postgresql:postgresql:42.2.18')
+    runtimeOnly('org.postgresql:postgresql:42.2.19')
 }
