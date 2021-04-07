@@ -12,7 +12,7 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.7.1'
-    testImplementation "org.mockito:mockito-core:3.8.22"
+    testImplementation "org.mockito:mockito-core:3.9.0"
     testImplementation 'org.mockito:mockito-junit-jupiter:3.8.22'
     implementation "org.projectlombok:lombok:1.18.20"
     implementation 'com.google.code.gson:gson:2.8.6'
