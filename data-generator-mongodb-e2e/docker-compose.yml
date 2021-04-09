@@ -1,6 +1,6 @@
 version: "2"
 services:
   mongo:
-    image: circleci/mongo:4.4.4
+    image: circleci/mongo:4.4.5
     ports:
       - "27017:27017"
