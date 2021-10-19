@@ -26,7 +26,7 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     testImplementation 'com.intuit.karate:karate-junit4:0.9.5'
-    testImplementation 'com.intuit.karate:karate-apache:0.9.5'
+    testImplementation 'com.intuit.karate:karate-apache:0.9.6'
 }
 
 test {
