@@ -4,7 +4,7 @@ sourceCompatibility = 1.11
 targetCompatibility = 1.11
 
 dependencies {
-    implementation 'org.springframework:spring-context:5.3.6'
+    implementation 'org.springframework:spring-context:5.3.17'
     implementation 'org.jeasy:easy-random-core:4.3.0'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.3'
